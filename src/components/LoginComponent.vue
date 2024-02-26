@@ -1,98 +1,128 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <Form @submit="handleLogin" :validation-schema="schema">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <Field name="email" type="text" class="form-control" />
-          <ErrorMessage name="email" class="error-feedback" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <Field name="password" type="password" class="form-control" />
-          <ErrorMessage name="password" class="error-feedback" />
-        </div>
 
-        <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
-            <span
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-            ></span>
-            <span>Login</span>
-          </button>
-        </div>
+  <b-modal
+    v-model="isComponentModalActive"
+    has-modal-card
 
-        <div class="form-group">
-          <div v-if="message" class="alert alert-danger" role="alert">
-            {{ message }}
+    :destroy-on-hide="false"
+    >
+    <template #default="props">
+
+      <div v-bind="formProps" @close="props.close">
+        <form action="">
+          <div class="modal-card"  @close="props.close">
+            <header class="modal-card-head">
+              <b-icon
+                icon="account"
+                type="is-info"
+                size="is-large">
+              </b-icon>
+              <p class="modal-card-title">Connection</p>
+              <button
+                type="button"
+                class="delete"
+                @click="$emit('close')" />
+            </header>
+            <section class="modal-card-body">
+              <b-field label="Email">
+                <b-input
+
+                  type="text"
+                  :value="formProps.email"
+                  placeholder="Your email"
+                  autocomplete="off"
+                  @input="handleEmailInput"
+                  required>
+                </b-input>
+              </b-field>
+            </section>
+            <section class="modal-card-body">
+              <b-field label="Password">
+                <b-input
+                  type="password"
+                  :value="formProps.password"
+                  password-reveal
+                  placeholder="Your password"
+                  @input="handlePasswordInput"
+                  autocomplete="off"
+                  required>
+                </b-input>
+              </b-field>
+            </section>
+            <footer class="modal-card-foot">
+              <b-button
+                label="Close"
+                @click="$emit('close')" />
+              <b-button
+                label="Login"
+                type="is-primary"
+                @click="handleLogin" />
+            </footer>
           </div>
-        </div>
-      </Form>
-    </div>
-  </div>
+        </form>
+      </div>
+    </template>
+  </b-modal>
+
+
 </template>
 
 <script>
-import { Form, Field, ErrorMessage } from "vee-validate";
-import * as yup from "yup";
+
 
 export default {
-  name: "LoginComponent",
-  components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Form,
-    Field,
-    ErrorMessage,
-  },
+  name: 'LoginComponent',
   data() {
-    const schema = yup.object().shape({
-      email: yup.string().required("Email is required!"),
-      password: yup.string().required("Password is required!"),
-    });
-
     return {
+      testiii: "ocucou",
+      isComponentModalActive: true,
+      formProps: {
+        email: 'adresse@email.com',
+        password: 'tonMotDePasse'
+      },
       loading: false,
-      message: "",
-      schema,
-    };
+      message: ''
+    }
   },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-    },
+      return this.$store.state.auth.status.loggedIn
+    }
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push("/profile");
+      this.$router.push('/profile')
     }
   },
   methods: {
-    handleLogin(user) {
-      this.loading = true;
+    handleLogin() {
+      this.loading = true
+      const user = {
+        email: this.formProps.email,
+        password: this.formProps.password
+      }
 
-      this.$store.dispatch("auth/login", user).then(
+      this.$store.dispatch('auth/login', user).then(
         () => {
-          this.$router.push("/profile");
+          this.$router.push('/profile')
         },
         (error) => {
-          this.loading = false;
+          this.loading = false
           this.message =
-            (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
+            (error.response?.data?.message) ||
             error.message ||
-            error.toString();
+            error.toString()
         }
-      );
+      )
     },
-  },
-};
+    handleEmailInput(event) {
+      this.formProps.email = event.target.value
+    },
+    handlePasswordInput(event) {
+      this.formProps.password = event.target.value
+    }
+  }
+}
 </script>
 
 <style scoped>
