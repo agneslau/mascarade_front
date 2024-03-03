@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import UserService from "../services/user.service";
+import NavService from "../services/nav.service";
 
 export default {
   name: "BoardStorytellerComponent",
@@ -17,15 +17,13 @@ export default {
     };
   },
   mounted() {
-    UserService.getStorytellerBoard().then(
+    NavService.getStorytellerBoard().then(
       (response) => {
         this.content = response.data;
       },
       (error) => {
         this.content =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
+          (error.response?.data?.message) ||
           error.message ||
           error.toString();
       }
