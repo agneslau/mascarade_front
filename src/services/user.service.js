@@ -1,23 +1,30 @@
 import axios from 'axios';
 import authHeader from './auth-header';
 
-const API_URL = 'http://localhost:8080/api/v1/test';
+const API_URL = 'http://localhost:8080/api/v1/users';
 
 class UserService {
-  getPublicContent() {
-    return axios.get(API_URL + '/all', { headers: authHeader() });
+
+  getUsers() {
+    return axios.get(API_URL, { headers: authHeader() });
   }
 
-  getPlayerBoard() {
-    return axios.get(API_URL + '/player', { headers: authHeader() });
+  addUser(user) {
+    return axios.post(API_URL, user, { headers: authHeader() });
   }
 
-  getStorytellerBoard() {
-    return axios.get(API_URL + '/storyteller', { headers: authHeader() });
+  deleteUser(id) {
+    return axios.delete(API_URL + '/' + id, { headers: authHeader() });
   }
 
-  getAdminBoard() {
-    return axios.get(API_URL + '/admin', { headers: authHeader() });
+  isNameTaken(name){
+  const result = axios.get(API_URL + '/name/' + name, { headers: authHeader() });
+  console.log(result)
+  return result;
+  }
+
+  isEmailTaken(email) {
+    return axios.get(API_URL + '/email/' + email, { headers: authHeader() });
   }
 }
 

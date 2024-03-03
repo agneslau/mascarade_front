@@ -74,7 +74,6 @@ export default {
   name: 'LoginComponent',
   data() {
     return {
-      testiii: "ocucou",
       isComponentModalActive: true,
       formProps: {
         email: 'adresse@email.com',
@@ -124,7 +123,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-</style>
