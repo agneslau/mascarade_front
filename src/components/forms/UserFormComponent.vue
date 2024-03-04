@@ -89,7 +89,7 @@ import UserService from '@/services/user.service.js'
 
 
 export default {
-  emits: ['close', 'addUser', 'canCancel'],
+  emits: ['close', 'addUser', 'editUser', 'canCancel'],
   props: {
 
     title: String,
@@ -172,6 +172,28 @@ export default {
         this.$emit('close')
       }
     },
+    async editUser() {
+      console.log(this.formData)
+      this.nameAttributes.isNameValid = this.name === this.formData.name ? true : await this.checkName()
+      this.emailAttributes.isEmailValid = this.email === this.formData.email ? true : await this.checkEmail()
+      this.rolesAttributes.isRolesValid = this.checkRoles()
+
+      if (this.nameAttributes.isNameValid
+        && this.emailAttributes.isEmailValid
+        && this.rolesAttributes.isRolesValid) {
+
+        const user = {
+          id: this.formData.id,
+          name: this.formData.name,
+          email: this.formData.email,
+          isAdmin: this.formData.isAdmin,
+          isPlayer: this.formData.isPlayer,
+          isStoryTeller: this.formData.isStoryTeller
+        }
+        this.$emit('editUser', user)
+        this.$emit('close')
+      }
+    },
     async checkName() {
       await UserService.isNameTaken(this.formData.name).then(
         (response) => {
@@ -251,9 +273,6 @@ export default {
     setRolesTypeInfo(message, type) {
       this.rolesAttributes.rolesMessage = message
       this.rolesAttributes.rolesType = type
-    },
-    editUser() {
-      console.log(this.formData)
     },
     updateFormProps() {
       console.log(this.email)
