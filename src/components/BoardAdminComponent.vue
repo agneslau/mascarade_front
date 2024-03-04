@@ -38,7 +38,7 @@
         :destroy-on-hide="true"
       >
         <template #default="props">
-          <UserFormComponent v-bind="formProps" @close="props.close()" @addUser="addUser" />
+          <UserFormComponent v-bind="formProps" @close="props.close()" @addUser="addUser" @editUser="editUser" />
         </template>
       </b-modal>
 
@@ -174,6 +174,31 @@ export default {
       UserService.addUser(userToSave).then(
         () => {
           this.$buefy.toast.open('Utilisateur ajouté!')
+          this.updateUsers()
+        },
+        (error) => {
+          this.content =
+            (error.response?.data?.message) ||
+            error.message ||
+            error.toString()
+        }
+      )
+      console.log("here :"+user.name)
+    },
+    editUser(user){
+      const userToSave = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        roles: [
+          user.isAdmin ? 'ROLE_ADMIN' : '',
+          user.isPlayer ? 'ROLE_PLAYER' : '',
+          user.isStoryTeller ? 'ROLE_STORY_TELLER' : ''
+        ].filter(role => role !== '')
+      }
+      UserService.editUser(userToSave).then(
+        () => {
+          this.$buefy.toast.open('Utilisateur modifié!')
           this.updateUsers()
         },
         (error) => {

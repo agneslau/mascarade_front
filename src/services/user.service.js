@@ -13,6 +13,10 @@ class UserService {
     return axios.post(API_URL, user, { headers: authHeader() });
   }
 
+  editUser(user) {
+    return axios.put(API_URL + '/' + user.id, user, { headers: authHeader() });
+  }
+
   deleteUser(id) {
     return axios.delete(API_URL + '/' + id, { headers: authHeader() });
   }
