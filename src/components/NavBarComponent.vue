@@ -22,7 +22,7 @@
     <template #end>
 
       <b-navbar-item tag="div">
-        <b-button v-if="!currentUser" type="is-primary" label="Connection" @click="isComponentModalActive = true"/>
+        <b-button v-if="!currentUser" type="is-primary" label="Connection" @click="logIn"/>
         <div class="buttons" v-if="currentUser">
           <a class="button is-light" @click.prevent="logOut">
             <strong>LogOut</strong>
@@ -50,11 +50,6 @@
 
 export default {
 
-  data() {
-    return {
-      isComponentModalActive: false,
-    };
-  },
   computed: {
     currentUser() {
       console.log('current user :', this.$store.state.auth.user)
@@ -85,6 +80,9 @@ export default {
   methods: {
     logOut() {
       this.$store.dispatch('auth/logout')
+      this.$router.push('/login')
+    },
+    logIn() {
       this.$router.push('/login')
     }
   }
