@@ -5,6 +5,7 @@
     has-modal-card
 
     :destroy-on-hide="false"
+    @close="closeLoginModale"
     >
     <template #default="props">
 
@@ -26,12 +27,10 @@
             <section class="modal-card-body">
               <b-field label="Email">
                 <b-input
-
                   type="text"
-                  :value="formProps.email"
+                  v-model="formProps.email"
                   placeholder="Your email"
                   autocomplete="off"
-                  @input="handleEmailInput"
                   required>
                 </b-input>
               </b-field>
@@ -40,10 +39,9 @@
               <b-field label="Password">
                 <b-input
                   type="password"
-                  :value="formProps.password"
+                  v-model="formProps.password"
                   password-reveal
                   placeholder="Your password"
-                  @input="handlePasswordInput"
                   autocomplete="off"
                   required>
                 </b-input>
@@ -114,11 +112,9 @@ export default {
         }
       )
     },
-    handleEmailInput(event) {
-      this.formProps.email = event.target.value
-    },
-    handlePasswordInput(event) {
-      this.formProps.password = event.target.value
+    closeLoginModale() {
+      console.log("redir")
+      this.$router.push('/')
     }
   }
 }

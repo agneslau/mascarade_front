@@ -2,7 +2,7 @@
   <div class="container">
     <header class="jumbotron">
       <h3>
-        <strong>{{currentUser.npname}}</strong> Profile
+        Profile de <strong>{{currentUser.name}}</strong>
       </h3>
     </header>
     <p>
