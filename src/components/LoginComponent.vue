@@ -1,28 +1,18 @@
 <template>
-
   <b-modal
     v-model="isComponentModalActive"
     has-modal-card
-
     :destroy-on-hide="false"
     @close="closeLoginModale"
-    >
+  >
     <template #default="props">
-
       <div v-bind="formProps" @close="props.close">
         <form action="">
-          <div class="modal-card"  @close="props.close">
+          <div class="modal-card" @close="props.close">
             <header class="modal-card-head">
-              <b-icon
-                icon="account"
-                type="is-info"
-                size="is-large">
-              </b-icon>
+              <b-icon icon="account" type="is-info" size="is-large"> </b-icon>
               <p class="modal-card-title">Connection</p>
-              <button
-                type="button"
-                class="delete"
-                @click="$emit('close')" />
+              <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
               <b-field label="Email">
@@ -31,7 +21,8 @@
                   v-model="formProps.email"
                   placeholder="Your email"
                   autocomplete="off"
-                  required>
+                  required
+                >
                 </b-input>
               </b-field>
             </section>
@@ -43,31 +34,23 @@
                   password-reveal
                   placeholder="Your password"
                   autocomplete="off"
-                  required>
+                  required
+                >
                 </b-input>
               </b-field>
             </section>
             <footer class="modal-card-foot">
-              <b-button
-                label="Close"
-                @click="$emit('close')" />
-              <b-button
-                label="Login"
-                type="is-primary"
-                @click="handleLogin" />
+              <b-button label="Close" @click="$emit('close')" />
+              <b-button label="Login" type="is-primary" @click="handleLogin" />
             </footer>
           </div>
         </form>
       </div>
     </template>
   </b-modal>
-
-
 </template>
 
 <script>
-
-
 export default {
   name: 'LoginComponent',
   data() {
@@ -105,15 +88,11 @@ export default {
         },
         (error) => {
           this.loading = false
-          this.message =
-            (error.response?.data?.message) ||
-            error.message ||
-            error.toString()
+          this.message = error.response?.data?.message || error.message || error.toString()
         }
       )
     },
     closeLoginModale() {
-      console.log("redir")
       this.$router.push('/')
     }
   }

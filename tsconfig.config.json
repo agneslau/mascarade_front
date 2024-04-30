@@ -1,0 +1,30 @@
+{
+  "extends": [
+    "@tsconfig/node18/tsconfig.json",
+    "@vue/tsconfig/tsconfig.json"
+  ],
+  "include": [
+    "vite.config.*",
+    "vitest.config.*",
+    "cypress.config.*",
+    "server/**/*"
+  ],
+  "compilerOptions": {
+    "types": [
+      "node",
+      "jsdom",
+      "buefy/types",
+      "axios",
+    ],
+    "composite": false,
+    "isolatedModules": true,
+    "strict" : true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+}

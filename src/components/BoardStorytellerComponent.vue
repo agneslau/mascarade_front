@@ -1,33 +1,35 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
-      <h3>{{ content }}</h3>
+    <header>
+      <h2>{{ content }}</h2>
     </header>
+    <div>board des dernières infos</div>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import NavService from "../services/nav.service";
+import NavService from '../services/nav.service'
 
 export default {
-  name: "BoardStorytellerComponent",
+  name: 'BoardStorytellerComponent',
+  components: {},
   data() {
     return {
-      content: "",
-    };
+      content: ''
+    }
   },
   mounted() {
     NavService.getStorytellerBoard().then(
       (response) => {
-        this.content = response.data;
+        this.content = response.data
       },
       (error) => {
-        this.content =
-          (error.response?.data?.message) ||
-          error.message ||
-          error.toString();
+        this.content = error.response?.data?.message || error.message || error.toString()
       }
-    );
-  },
-};
+    )
+  }
+}
 </script>
