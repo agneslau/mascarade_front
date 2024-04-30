@@ -14,6 +14,9 @@ class UserService {
   getMinimalUsers(): Promise<AxiosResponse<MinimalUser[]>> {
     return axios.get(API_URL + '/minimal', { headers: authHeader() })
   }
+  getMinimalUserByEmail(email): Promise<AxiosResponse<MinimalUser>> {
+    return axios.get(API_URL + '/minimal/email/' + email, { headers: authHeader() })
+  }
 
   addUser(user) {
     return axios.post(API_URL, user, { headers: authHeader() })

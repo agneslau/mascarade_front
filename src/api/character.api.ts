@@ -12,6 +12,9 @@ class CharacterApi {
   getCharacter(id: string): Promise<Character> {
     return axios.get(API_URL + '/' + id, { headers: authHeader() })
   }
+  getCharactersByPlayerId(id: string): Promise<AxiosResponse<Character[]>> {
+    return axios.get(API_URL + '/id/' + id, { headers: authHeader() })
+  }
 
   isTaken(name: string, clan: Clan) {
     return axios.get(API_URL + '/isTaken?name=' + name + '&clan=' + clan, { headers: authHeader() })
