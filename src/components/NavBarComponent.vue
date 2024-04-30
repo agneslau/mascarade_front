@@ -1,55 +1,45 @@
 <template>
-
-
   <b-navbar>
-      <b-navbar-item tag="router-link" to="/">Mascarade</b-navbar-item>
+    <b-navbar-item tag="router-link" to="/">Mascarade</b-navbar-item>
     <template #start>
       <b-navbar-item tag="router-link" to="/">Mascarade</b-navbar-item>
-      <b-navbar-item tag="router-link" to="/home" >
-        <b-icon
-          icon="home"
-          type="is-info">
-        </b-icon>
+      <b-navbar-item tag="router-link" to="/home">
+        <b-icon icon="home" type="is-info"> </b-icon>
         Home
       </b-navbar-item>
-      <b-navbar-dropdown v-if="currentUser" label="Boards">
-        <b-navbar-item v-if="showAdminBoard" tag="router-link" to="/admin">Board Admin</b-navbar-item>
-        <b-navbar-item v-if="showPlayerBoard" tag="router-link" to="/player">Board Joueur</b-navbar-item>
-        <b-navbar-item v-if="showStorytellerBoard" tag="router-link" to="/storyteller">Board Conteur</b-navbar-item>
+
+      <b-navbar-item v-if="currentUser && showAdminBoard" tag="router-link" to="/admin"
+        >Board Admin</b-navbar-item
+      >
+      <b-navbar-item v-if="currentUser && showPlayerBoard" tag="router-link" to="/player"
+        >Board Joueur</b-navbar-item
+      >
+      <b-navbar-dropdown v-if="currentUser && showStorytellerBoard" label="Board Conteur">
+        <b-navbar-item tag="router-link" to="/storyteller">Base Test</b-navbar-item>
+        <b-navbar-item tag="router-link" to="/storyteller/characters">Personnages</b-navbar-item>
+        <b-navbar-item tag="router-link" to="/storyteller/interparties">Interparties</b-navbar-item>
       </b-navbar-dropdown>
     </template>
 
     <template #end>
-
       <b-navbar-item tag="div">
-        <b-button v-if="!currentUser" type="is-primary" label="Connection" @click="logIn"/>
+        <b-button v-if="!currentUser" type="is-primary" label="Connection" @click="logIn" />
         <div class="buttons" v-if="currentUser">
           <a class="button is-light" @click.prevent="logOut">
             <strong>LogOut</strong>
           </a>
           <a class="button is-light" v-if="currentUser" href="/profile">
-            <b-icon
-              icon="account"
-              type="is-info">
-            </b-icon>
+            <b-icon icon="account" type="is-info"> </b-icon>
             <strong>{{ currentUser.name }}</strong>
           </a>
         </div>
       </b-navbar-item>
-
-      </template>
-
-
+    </template>
   </b-navbar>
-
-
 </template>
 
 <script>
-
-
 export default {
-
   computed: {
     currentUser() {
       console.log('current user :', this.$store.state.auth.user)
