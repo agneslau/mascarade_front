@@ -1,5 +1,6 @@
-export interface MinimalUser {
+export interface User {
   id: string
   name: string
   email: string
+  roles: string[]
 }

@@ -20,6 +20,18 @@ class CharacterService {
     )
   }
 
+  getCharactersByPlayerId(id: string) {
+    return CharacterApi.getCharactersByPlayerId(id).then(
+      (response: { data: Character[] }) => {
+        return response.data.map((character) => {
+          return { ...character, creationDate: new Date(character.creationDate) }
+        })
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
+  }
   getCharacter(id: string): Promise<Character> {
     return axios.get(API_URL + '/' + id, { headers: authHeader() })
   }

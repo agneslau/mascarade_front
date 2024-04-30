@@ -11,9 +11,10 @@
       <b-navbar-item v-if="currentUser && showAdminBoard" tag="router-link" to="/admin"
         >Board Admin</b-navbar-item
       >
-      <b-navbar-item v-if="currentUser && showPlayerBoard" tag="router-link" to="/player"
-        >Board Joueur</b-navbar-item
-      >
+      <b-navbar-dropdown v-if="currentUser && showPlayerBoard" label="Board Joueur">
+        <b-navbar-item tag="router-link" to="/player">Base Test</b-navbar-item>
+        <b-navbar-item tag="router-link" to="/player/playerCharacters">Personnages</b-navbar-item>
+      </b-navbar-dropdown>
       <b-navbar-dropdown v-if="currentUser && showStorytellerBoard" label="Board Conteur">
         <b-navbar-item tag="router-link" to="/storyteller">Base Test</b-navbar-item>
         <b-navbar-item tag="router-link" to="/storyteller/characters">Personnages</b-navbar-item>

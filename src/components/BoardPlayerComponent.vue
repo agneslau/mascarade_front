@@ -1,33 +1,34 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
+    <header>
       <h3>{{ content }}</h3>
     </header>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import NavService from "../services/nav.service";
+import NavService from '../services/nav.service'
 
 export default {
-  name: "BoardUserComponent",
+  name: 'BoardPlayerComponent',
   data() {
     return {
-      content: "",
-    };
+      content: ''
+    }
   },
   mounted() {
     NavService.getPlayerBoard().then(
       (response) => {
-        this.content = response.data;
+        this.content = response.data
       },
       (error) => {
-        this.content =
-          (error.response?.data?.message ||
-          error.message)
-          error.toString();
+        this.content = error.response?.data?.message || error.message
+        error.toString()
       }
-    );
-  },
-};
+    )
+  }
+}
 </script>

@@ -21,6 +21,16 @@ class UserService {
       }
     )
   }
+  getMinimalUserByEmail(email: string): Promise<MinimalUser> {
+    return UserApi.getMinimalUserByEmail(email).then(
+      (response: { data: MinimalUser }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
+  }
 
   addUser(user) {
     return axios.post(API_URL, user, { headers: authHeader() })

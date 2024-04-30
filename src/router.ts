@@ -9,6 +9,7 @@ const BoardStoryteller = () => import('./components/BoardStorytellerComponent.vu
 const BoardPlayer = () => import('./components/BoardPlayerComponent.vue')
 
 const Characters = () => import('./components/CharactersComponent.vue')
+const PlayerCharacters = () => import('./components/PlayerCharactersComponent.vue')
 
 const routes = [
   {
@@ -40,7 +41,15 @@ const routes = [
     path: '/player',
     name: 'player',
     // lazy-loaded
-    component: BoardPlayer
+    component: BoardPlayer,
+    children: [
+      {
+        path: 'playerCharacters',
+        name: 'playerCharacters',
+        // lazy-loaded
+        component: PlayerCharacters
+      }
+    ]
   },
   {
     path: '/storyteller',
