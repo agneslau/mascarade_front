@@ -8,7 +8,6 @@
         <b-icon icon="plus"></b-icon>
       </b-button>
       <b-table :data="users">
-
         <b-table-column field="id" label="ID" width="40" numeric v-slot="props">
           {{ props.row.id }}
         </b-table-column>
@@ -24,7 +23,7 @@
         <b-table-column field="actions" label="actions" v-slot="props">
           <div class="buttons">
             <b-button @click="openEditUser(props.row.id)">
-              <b-icon icon="pencil" ></b-icon>
+              <b-icon icon="pencil"></b-icon>
             </b-button>
             <b-button @click="confirmDelete(props.row.id)">
               <b-icon icon="delete" type="is-danger"></b-icon>
@@ -32,19 +31,18 @@
           </div>
         </b-table-column>
       </b-table>
-      <b-modal
-        v-model="isModalOpen"
-        has-modal-card
-        :destroy-on-hide="true"
-      >
+      <b-modal v-model="isModalOpen" has-modal-card :destroy-on-hide="true">
         <template #default="props">
-          <UserFormComponent v-bind="formProps" @close="props.close()" @addUser="addUser" @editUser="editUser" />
+          <UserFormComponent
+            v-bind="formProps"
+            @close="props.close()"
+            @addUser="addUser"
+            @editUser="editUser"
+          />
         </template>
       </b-modal>
-
     </div>
   </div>
-
 </template>
 
 <script>
@@ -57,7 +55,6 @@ export default {
   components: { UserFormComponent },
   data() {
     return {
-      isDeleteModalOpen: false,
       isModalOpen: false,
       content: '',
       users: [],
@@ -69,7 +66,7 @@ export default {
         password: '',
         isAdmin: false,
         isPlayer: false,
-        isStoryTeller: false,
+        isStoryTeller: false
       }
     }
   },
@@ -79,17 +76,17 @@ export default {
         this.content = response.data
       },
       (error) => {
-        this.content =
-          (error.response?.data?.message) ||
-          error.message ||
-          error.toString()
+        this.content = error.response?.data?.message || error.message || error.toString()
       }
     )
     this.updateUsers()
   },
   methods: {
     formatRoles(roles) {
-      return roles.map(role => this.formatRole(role)).reduce((acc, cur) => acc + cur + ', ', ' ').slice(0, -2)
+      return roles
+        .map((role) => this.formatRole(role))
+        .reduce((acc, cur) => acc + cur + ', ', ' ')
+        .slice(0, -2)
     },
     formatRole(role) {
       switch (role) {
@@ -102,16 +99,24 @@ export default {
       }
     },
     confirmDelete(id) {
-      console.log(id)
-      const user = this.users.find(user => user.id === id)
-      console.log(user)
+      const user = this.users.find((user) => user.id === id)
       this.$buefy.dialog.confirm({
         title: 'Supprimer un compte',
-        message: 'Etes-vous sûr de vouloir <b>supprimer</b> le compte suivant? Cette action est irréversible. '
-          + '<br>'
-          + '<br> ID: ' + '<b>' + user.id + '</b>'
-          + '<br> nom: ' + '<b>' + user.name + '</b>'
-          + '<br> e-mail: ' + '<b>' + user.email + '</b>',
+        message:
+          'Etes-vous sûr de vouloir <b>supprimer</b> le compte suivant? Cette action est irréversible. ' +
+          '<br>' +
+          '<br> ID: ' +
+          '<b>' +
+          user.id +
+          '</b>' +
+          '<br> nom: ' +
+          '<b>' +
+          user.name +
+          '</b>' +
+          '<br> e-mail: ' +
+          '<b>' +
+          user.email +
+          '</b>',
         confirmText: 'Supprimer',
         cancelText: 'Annuler',
         type: 'is-danger',
@@ -123,8 +128,7 @@ export default {
       })
     },
     openEditUser(id) {
-      const user = this.users.find(user => user.id === id)
-      console.log(user)
+      const user = this.users.find((user) => user.id === id)
       this.formProps.title = 'Modifier un utilisateur'
       this.formProps.id = user.id
       this.formProps.name = user.name
@@ -136,7 +140,6 @@ export default {
       this.isModalOpen = true
     },
     openNewUser() {
-      console.log('here')
       this.formProps.title = 'Ajouter un utilisalteur'
       this.formProps.id = ''
       this.formProps.name = ''
@@ -153,14 +156,11 @@ export default {
           this.users = response.data
         },
         (error) => {
-          this.content =
-            (error.response?.data?.message) ||
-            error.message ||
-            error.toString()
+          this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
     },
-    addUser(user){
+    addUser(user) {
       const userToSave = {
         name: user.name,
         email: user.email,
@@ -169,7 +169,7 @@ export default {
           user.isAdmin ? 'ROLE_ADMIN' : '',
           user.isPlayer ? 'ROLE_PLAYER' : '',
           user.isStoryTeller ? 'ROLE_STORY_TELLER' : ''
-        ].filter(role => role !== '')
+        ].filter((role) => role !== '')
       }
       UserService.addUser(userToSave).then(
         () => {
@@ -177,15 +177,11 @@ export default {
           this.updateUsers()
         },
         (error) => {
-          this.content =
-            (error.response?.data?.message) ||
-            error.message ||
-            error.toString()
+          this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
-      console.log("here :"+user.name)
     },
-    editUser(user){
+    editUser(user) {
       const userToSave = {
         id: user.id,
         name: user.name,
@@ -194,7 +190,7 @@ export default {
           user.isAdmin ? 'ROLE_ADMIN' : '',
           user.isPlayer ? 'ROLE_PLAYER' : '',
           user.isStoryTeller ? 'ROLE_STORY_TELLER' : ''
-        ].filter(role => role !== '')
+        ].filter((role) => role !== '')
       }
       UserService.editUser(userToSave).then(
         () => {
@@ -202,13 +198,9 @@ export default {
           this.updateUsers()
         },
         (error) => {
-          this.content =
-            (error.response?.data?.message) ||
-            error.message ||
-            error.toString()
+          this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
-      console.log("here :"+user.name)
     },
     deleteUser(id) {
       UserService.deleteUser(id).then(
@@ -217,10 +209,7 @@ export default {
           this.updateUsers()
         },
         (error) => {
-          this.content =
-            (error.response?.data?.message) ||
-            error.message ||
-            error.toString()
+          this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
     }

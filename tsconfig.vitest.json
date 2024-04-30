@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.app.json",
+  "exclude": [],
+  "compilerOptions": {
+    "composite": false,
+    "lib": [],
+    "types": [
+      "node",
+      "jsdom",
+      "buefy/types",
+      "buefy",
+      "axios"
+    ],
+    "importsNotUsedAsValues":"remove",
+    "preserveValueImports": false,
+    "isolatedModules": true,
+    "strict" : true,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  }
+}
