@@ -10,6 +10,7 @@ const BoardPlayer = () => import('./components/BoardPlayerComponent.vue')
 
 const Characters = () => import('./components/CharactersComponent.vue')
 const PlayerCharacters = () => import('./components/PlayerCharactersComponent.vue')
+const AipSessions = () => import('./components/AipSessionsComponent.vue')
 
 const routes = [
   {
@@ -67,7 +68,7 @@ const routes = [
         path: 'interparties',
         name: 'interparties',
         // lazy-loaded
-        component: BoardStoryteller
+        component: AipSessions
       }
     ]
   },
