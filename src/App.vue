@@ -15,6 +15,7 @@
 
 <script>
 import NavBarComponent from '@/components/NavBarComponent.vue'
+import EventBus from '@/common/EventBus'
 
 export default {
   components: {
@@ -23,7 +24,17 @@ export default {
   methods: {
     redirectToLogIn() {
       this.$router.push('/home')
+    },
+    logOut() {
+      this.$store.dispatch('auth/logout')
+      this.$router.push('/home')
     }
+  },
+  mounted() {
+    EventBus.on('logOut', () => this.logOut())
+  },
+  beforeDestroy() {
+    EventBus.remove('logOut')
   }
 }
 </script>

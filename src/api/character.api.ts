@@ -1,35 +1,35 @@
 import type { Character } from '@/types/character'
-import axios, { type AxiosResponse } from 'axios'
-import authHeader from '@/services/auth-header.js'
+import { type AxiosResponse } from 'axios'
 import { Clan } from '@/types/enums/clan'
+import api from './api'
 
-const API_URL = 'http://localhost:8080/api/v1/characters'
+const API_URL = '/characters'
 
 class CharacterApi {
   getCharacters(): Promise<AxiosResponse<Character[]>> {
-    return axios.get(API_URL, { headers: authHeader() })
+    return api.get(API_URL)
   }
   getCharacter(id: string): Promise<Character> {
-    return axios.get(API_URL + '/' + id, { headers: authHeader() })
+    return api.get(API_URL + '/' + id)
   }
   getCharactersByPlayerId(id: string): Promise<AxiosResponse<Character[]>> {
-    return axios.get(API_URL + '/id/' + id, { headers: authHeader() })
+    return api.get(API_URL + '/id/' + id)
   }
 
   isTaken(name: string, clan: Clan) {
-    return axios.get(API_URL + '/isTaken?name=' + name + '&clan=' + clan, { headers: authHeader() })
+    return api.get(API_URL + '/isTaken?name=' + name + '&clan=' + clan)
   }
 
   addCharacter(character: Character): Promise<AxiosResponse<Character>> {
-    return axios.post(API_URL, character, { headers: authHeader() })
+    return api.post(API_URL, character)
   }
 
   editCharacter(character: Character): Promise<AxiosResponse<Character>> {
-    return axios.put(API_URL + '/' + character.id, character, { headers: authHeader() })
+    return api.put(API_URL + '/' + character.id, character)
   }
 
   deleteCharacter(id: string): Promise<void> {
-    return axios.delete(API_URL + '/' + id, { headers: authHeader() })
+    return api.delete(API_URL + '/' + id)
   }
 }
 

@@ -76,6 +76,11 @@ export default {
     logIn() {
       this.$router.push('/login')
     }
+  },
+  mounted() {
+    if (!this.$store.state.auth.user) {
+      this.logOut()
+    }
   }
 }
 </script>

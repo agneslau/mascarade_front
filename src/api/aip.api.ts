@@ -1,18 +1,18 @@
-import axios, { type AxiosResponse } from 'axios'
-import authHeader from '@/services/auth-header.js'
 import type { AipSession } from '@/types/aipSession'
+import api from '@/api/api'
+import type { AxiosResponse } from 'axios'
 
-const API_URL = 'http://localhost:8080/api/v1/aips/sessions'
+const API_URL = '/aips/sessions'
 
 class AipApi {
   addAipSession(aipSession: AipSession): Promise<AxiosResponse<AipSession>> {
-    return axios.post(API_URL, aipSession, { headers: authHeader() })
+    return api.post(API_URL, aipSession)
   }
   getAipSessions(): Promise<AxiosResponse<AipSession[]>> {
-    return axios.get(API_URL, { headers: authHeader() })
+    return api.get(API_URL)
   }
   deleteAipSession(id: string): Promise<AxiosResponse<string>> {
-    return axios.delete(`${API_URL}/${id}`, { headers: authHeader() })
+    return api.delete(`${API_URL}/${id}`)
   }
 }
 
