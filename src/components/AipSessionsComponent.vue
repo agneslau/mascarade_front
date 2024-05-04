@@ -18,6 +18,7 @@ import { defineComponent } from 'vue'
 import AipSessionsFormComponent from '@/components/forms/AipSessionsFormComponent.vue'
 import AipService from '@/services/aip.service'
 import type { AipSession } from '@/types/aipSession'
+import EventBus from '@/common/EventBus'
 
 export default defineComponent({
   name: 'AipSessionsComponent.vue',
@@ -121,6 +122,9 @@ export default defineComponent({
         },
         (error: any) => {
           this.content = error.response?.data?.message || error.message || error.toString()
+          if (error.response && error.response.status === 403) {
+            EventBus.dispatch('logout')
+          }
         }
       )
     }
