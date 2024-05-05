@@ -1,10 +1,6 @@
-import axios from 'axios'
-import authHeader from '@/services/auth-header.js'
 import CharacterApi from '@/api/character.api'
 import { Clan } from '@/types/enums/clan'
 import type { Character } from '@/types/character'
-
-const API_URL = 'http://localhost:8080/api/v1/characters'
 
 class CharacterService {
   getAllCharacters() {
@@ -32,8 +28,15 @@ class CharacterService {
       }
     )
   }
-  getCharacter(id: string): Promise<Character> {
-    return axios.get(API_URL + '/' + id, { headers: authHeader() })
+  getCharacterById(id: string): Promise<Character> {
+    return CharacterApi.getCharacterById(id).then(
+      (response: { data: Character }) => {
+        return { ...response.data, creationDate: new Date(response.data.creationDate) }
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
   isTaken(name: string, clan: Clan) {

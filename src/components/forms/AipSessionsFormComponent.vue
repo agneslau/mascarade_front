@@ -4,7 +4,7 @@ import type { AipSession } from '@/types/aipSession'
 
 export default defineComponent({
   name: 'AipSessionsFormComponent.vue',
-  emits: ['addAipSession', 'deleteAipSession'],
+  emits: ['addAipSession', 'deleteAipSession', 'saveSession'],
   props: {
     isNew: {
       type: Boolean,
@@ -46,6 +46,10 @@ export default defineComponent({
     },
     deleteAipSession() {
       this.$emit('deleteAipSession', this.aipSession)
+    },
+    saveSession() {
+      console.log('save session')
+      this.$emit('saveSession', this.aipSession)
     }
   }
 })
@@ -78,7 +82,7 @@ export default defineComponent({
       <b-switch :disabled="isNew || !aipSession.isClosed" v-model="aipSession.isRendered" />
     </b-field>
     <div v-if="!isNew" class="aip_session_form___buttons">
-      <b-button @click="console.log('save')">
+      <b-button @click="saveSession">
         <b-icon icon="content-save"></b-icon>
       </b-button>
       <b-button :disabled="aipSession.isOpen" @click="deleteAipSession">

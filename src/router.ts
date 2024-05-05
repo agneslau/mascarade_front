@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import HomeComponent from './components/HomeComponent.vue'
 import LoginComponent from './components/LoginComponent.vue'
 import Test1 from '@/components/tests/Test1.vue'
+
 // lazy-loaded
 const ProfileComponent = () => import('./components/ProfileComponent.vue')
 const BoardAdmin = () => import('./components/BoardAdminComponent.vue')
@@ -11,6 +12,7 @@ const BoardPlayer = () => import('./components/BoardPlayerComponent.vue')
 const Characters = () => import('./components/CharactersComponent.vue')
 const PlayerCharacters = () => import('./components/PlayerCharactersComponent.vue')
 const AipSessions = () => import('./components/AipSessionsComponent.vue')
+const CharacterVue = () => import('./components/CharacterComponent.vue')
 
 const routes = [
   {
@@ -49,6 +51,13 @@ const routes = [
         name: 'playerCharacters',
         // lazy-loaded
         component: PlayerCharacters
+      },
+      {
+        path: 'character/:id',
+        name: 'character',
+        // lazy-loaded
+        component: CharacterVue,
+        props: true
       }
     ]
   },

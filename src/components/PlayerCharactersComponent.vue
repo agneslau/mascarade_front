@@ -1,9 +1,8 @@
 <template>
   <div>
-    <p>wesh</p>
-    <h1>c'esy ici</h1>
+    <h1 class="characters_title">Tes personnages</h1>
     <div v-for="character in characters" :key="character.id">
-      <PlayerCharacterCard :character="character" />
+      <PlayerCharacterCard @click="openCharacter(character)" :character="character" />
     </div>
   </div>
 </template>
@@ -55,9 +54,20 @@ export default defineComponent({
           this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
+    },
+    openCharacter(character: Character) {
+      console.log(character.name)
+      //Redirect to Character route with character as prop
+      this.$router.push({ path: 'character/' + character.id })
     }
   }
 })
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.characters_title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 2rem 0;
+}
+</style>

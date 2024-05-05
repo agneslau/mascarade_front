@@ -1,6 +1,5 @@
 import axiosInstance from './api'
 import TokenService from '@/services/token.service'
-import axios from 'axios'
 
 const setup = (store) => {
   axiosInstance.interceptors.request.use(
@@ -27,7 +26,11 @@ const setup = (store) => {
       console.log(originalConfig)
       console.log(originalConfig.baseURL)
 
-      if (originalConfig.url !== '/auth/authenticate' && err.response) {
+      if (err.response?.status === 401) {
+        store.dispatch('auth/logout')
+      }
+
+      /*if (originalConfig.url !== '/auth/authenticate' && err.response) {
         console.log('ici')
         // Access Token was expired
         if (err.response.status === 401 && originalConfig.url != '/auth/refresh-token') {
@@ -53,7 +56,7 @@ const setup = (store) => {
             return Promise.reject(_error)
           }
         }
-      }
+      }*/
 
       return Promise.reject(err)
     }

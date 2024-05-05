@@ -14,6 +14,12 @@ class AipApi {
   deleteAipSession(id: string): Promise<AxiosResponse<string>> {
     return api.delete(`${API_URL}/${id}`)
   }
+  saveAipSession(aipSession: AipSession): Promise<AxiosResponse<AipSession>> {
+    return api.put(API_URL, aipSession)
+  }
+  getOpenedSessions(): Promise<AxiosResponse<AipSession[]>> {
+    return api.get(`${API_URL}/opened`)
+  }
 }
 
 export default new AipApi()
