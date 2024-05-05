@@ -9,11 +9,11 @@ class CharacterApi {
   getCharacters(): Promise<AxiosResponse<Character[]>> {
     return api.get(API_URL)
   }
-  getCharacter(id: string): Promise<Character> {
+  getCharacterById(id: string): Promise<AxiosResponse<Character>> {
     return api.get(API_URL + '/' + id)
   }
   getCharactersByPlayerId(id: string): Promise<AxiosResponse<Character[]>> {
-    return api.get(API_URL + '/id/' + id)
+    return api.get(API_URL + '/playerId/' + id)
   }
 
   isTaken(name: string, clan: Clan) {

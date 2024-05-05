@@ -9,6 +9,7 @@
       :aip-session="aipSession"
       :is-new="false"
       @delete-aip-session="confirmDeleteAipSession"
+      @save-session="confirmSaveSession"
     />
   </div>
 </template>
@@ -79,7 +80,7 @@ export default defineComponent({
       this.$buefy.dialog.confirm({
         title: "Supprimer une session d'AIP",
         message:
-          "Etes-vous sûr de vouloir <b>supprimer</b> cette session d'AIP? Cette action est irréversible. Tous les joueurs ayant créer des AIP pour cette session les perdront. " +
+          "Etes-vous sûr de vouloir <b>supprimer</b> cette session d'AIP? Cette action est irréversible. Tous les joueurs ayant créé des AIP pour cette session les perdront. " +
           '<br>' +
           '<br> ID: ' +
           '<b>' +
@@ -100,6 +101,36 @@ export default defineComponent({
         onConfirm: () => {
           this.deleteAipSession(aipSession)
           this.$buefy.toast.open("Session d'AIP supprimée!")
+        }
+      })
+    },
+    confirmSaveSession(aipSession: AipSession) {
+      this.$buefy.dialog.confirm({
+        title: "Modifier une session d'AIP",
+        message:
+          "Etes-vous sûr de vouloir <b>modifier</b> cette session d'AIP? " +
+          '<br>' +
+          '<br> ID: ' +
+          '<b>' +
+          aipSession.id +
+          '</b>' +
+          '<br> nom: ' +
+          '<b>' +
+          aipSession.name +
+          '</b>' +
+          '<br> Etat: ' +
+          '<b>' +
+          this.getAipSessionState(aipSession) +
+          '</b>',
+        confirmText: 'Modifier',
+        cancelText: 'Annuler',
+        type: 'is-danger',
+        hasIcon: true,
+        onConfirm: () => {
+          this.saveAipSession(aipSession)
+          this.$buefy.toast.open(
+            "Session d'AIP modifiée, statut : " + this.getAipSessionState(aipSession)
+          )
         }
       })
     },
@@ -125,6 +156,19 @@ export default defineComponent({
           if (error.response && error.response.status === 403) {
             EventBus.dispatch('logout')
           }
+        }
+      )
+    },
+    saveAipSession(aipSession: AipSession) {
+      console.log('save aip session')
+      AipService.saveAipSession(aipSession).then(
+        (response: AipSession) => {
+          this.aipSessions = this.aipSessions.map((aipSession) =>
+            aipSession.id === response.id ? response : aipSession
+          )
+        },
+        (error) => {
+          this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
     }
