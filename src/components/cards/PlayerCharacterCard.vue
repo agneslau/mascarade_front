@@ -28,6 +28,7 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .character_card {
+  cursor: pointer;
   width: 300px;
   display: flex;
   justify-content: space-between;

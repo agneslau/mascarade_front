@@ -26,14 +26,15 @@ export default defineComponent({
     CharacterService.getCharacterById(this.id).then(
       (response: Character) => {
         this.character = response
-      },
-      (error) => {
-        this.content = error.response?.data?.message || error.message || error.toString()
-      }
-    )
-    AipService.getOpenedSessions().then(
-      (response: AipSession[]) => {
-        this.openSessions = response
+        AipService.getOpenedSessionsByCharacter(this.character.id).then(
+          (response: AipSession[]) => {
+            this.openSessions = response
+            console.log(this.openSessions)
+          },
+          (error) => {
+            this.content = error.response?.data?.message || error.message || error.toString()
+          }
+        )
       },
       (error) => {
         this.content = error.response?.data?.message || error.message || error.toString()
@@ -48,7 +49,7 @@ export default defineComponent({
   <h2>{{ character.name }}</h2>
 
   <div v-for="aipSession in openSessions">
-    <AipSessionCard :aipSession="aipSession" />
+    <AipSessionCard :aipSession="aipSession" :characterId="id" />
   </div>
 </template>
 

@@ -3,7 +3,7 @@ import { defineComponent } from 'vue'
 import type { AipSession } from '@/types/aipSession'
 
 export default defineComponent({
-  name: 'AipSessionsFormComponent.vue',
+  name: 'AipSessionFormComponent.vue',
   emits: ['addAipSession', 'deleteAipSession', 'saveSession'],
   props: {
     isNew: {
