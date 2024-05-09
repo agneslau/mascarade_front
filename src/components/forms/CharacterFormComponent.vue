@@ -278,7 +278,11 @@ export default defineComponent({
       (response) => {
         this.users = response
         this.minimalUser = {
-          ...(this.users.find((user) => user.id == this.character.playerId) || { id: '', name: '' })
+          ...(this.users.find((user) => user.id == this.character.playerId) || {
+            id: '',
+            name: '',
+            email: ''
+          })
         }
       },
       (error) => {

@@ -24,7 +24,7 @@ export const auth = {
     logout({ commit }) {
       AuthService.logout()
       commit('logout')
-      this.$router.push('/home')
+      //this.$router.push('/home')
     },
     refreshToken({ commit }, accessToken) {
       commit('refreshToken', accessToken)

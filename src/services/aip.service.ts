@@ -1,5 +1,6 @@
 import type { AipSession } from '@/types/aipSession'
 import AipApi from '@/api/aip.api'
+import type { Aip } from '@/types/aip'
 
 class AipService {
   addAipSession(aipSession: AipSession): Promise<AipSession> {
@@ -54,14 +55,24 @@ class AipService {
       }
     )
   }
-  getOpenedSessions(): Promise<AipSession[]> {
-    return AipApi.getOpenedSessions().then(
+  getOpenedSessionsByCharacter(characterId: string): Promise<AipSession[]> {
+    return AipApi.getOpenedSessionsByCharacter(characterId).then(
       (response: { data: AipSession[] }) => {
         return response.data.map((aipSession) => ({
           ...aipSession,
           beginDate: new Date(aipSession.beginDate),
           endDate: new Date(aipSession.endDate)
         }))
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
+  }
+  addAipToSession(aip: Aip, aipSessionId: string): Promise<Aip> {
+    return AipApi.addAipToSession(aip, aipSessionId).then(
+      (response: { data: Aip }) => {
+        return response.data
       },
       (error) => {
         return error.response?.data?.message || error.message || error.toString()

@@ -1,11 +1,11 @@
 <template>
-  <aip-sessions-form-component
+  <aip-session-form-component
     :aip-session="emptyAipSession"
     :is-new="true"
     @add-aip-session="addAipSession"
   />
   <div v-for="aipSession in aipSessions" :key="aipSession.id">
-    <aip-sessions-form-component
+    <aip-session-form-component
       :aip-session="aipSession"
       :is-new="false"
       @delete-aip-session="confirmDeleteAipSession"
@@ -16,14 +16,14 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import AipSessionsFormComponent from '@/components/forms/AipSessionsFormComponent.vue'
+import AipSessionFormComponent from '@/components/forms/AipSessionFormComponent.vue'
 import AipService from '@/services/aip.service'
-import type { AipSession } from '@/types/aipSession'
+import { type AipSession, createEmptyAipSession } from '@/types/aipSession'
 import EventBus from '@/common/EventBus'
 
 export default defineComponent({
   name: 'AipSessionsComponent.vue',
-  components: { AipSessionsFormComponent },
+  components: { AipSessionFormComponent },
   data() {
     return {
       content: '',
@@ -62,19 +62,11 @@ export default defineComponent({
           this.content = error.response?.data?.message || error.message || error.toString()
         }
       )
-      console.log(this.aipSessions)
+
       this.reinitEmptyAipSession()
     },
     reinitEmptyAipSession() {
-      this.emptyAipSession = {
-        id: '',
-        name: '',
-        beginDate: new Date(),
-        endDate: new Date(new Date().setMonth(new Date().getMonth() + 1)),
-        isOpen: false,
-        isClosed: false,
-        isRendered: false
-      }
+      this.emptyAipSession = createEmptyAipSession()
     },
     confirmDeleteAipSession(aipSession: AipSession) {
       this.$buefy.dialog.confirm({
