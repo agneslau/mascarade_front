@@ -44,7 +44,6 @@
 
 <script>
 import UserService from '../services/user.service'
-import NavService from '@/services/nav.service.js'
 import UserFormComponent from '@/components/forms/UserFormComponent.vue'
 
 export default {
