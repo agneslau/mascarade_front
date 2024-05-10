@@ -45,9 +45,7 @@ class UserService {
   }
 
   isNameTaken(name) {
-    const result = axios.get(API_URL + '/name/' + name, { headers: authHeader() })
-    console.log(result)
-    return result
+    return axios.get(API_URL + '/name/' + name, { headers: authHeader() })
   }
 
   isEmailTaken(email) {

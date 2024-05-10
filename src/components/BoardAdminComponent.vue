@@ -1,8 +1,5 @@
 <template>
   <div class="container">
-    <header class="jumbotron">
-      <h3>{{ content }}</h3>
-    </header>
     <div class="container">
       <b-button @click="openNewUser" rounded type="is-primary">
         <b-icon icon="plus"></b-icon>
@@ -47,7 +44,6 @@
 
 <script>
 import UserService from '../services/user.service'
-import NavService from '@/services/nav.service.js'
 import UserFormComponent from '@/components/forms/UserFormComponent.vue'
 
 export default {
@@ -71,14 +67,6 @@ export default {
     }
   },
   mounted() {
-    NavService.getAdminBoard().then(
-      (response) => {
-        this.content = response.data
-      },
-      (error) => {
-        this.content = error.response?.data?.message || error.message || error.toString()
-      }
-    )
     this.updateUsers()
   },
   methods: {

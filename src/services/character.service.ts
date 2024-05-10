@@ -55,7 +55,6 @@ class CharacterService {
   }
 
   editCharacter(character: Character): Promise<Character> {
-    console.log(character)
     return CharacterApi.editCharacter(character).then(
       (response: { data: Character }) => {
         return { ...response.data, creationDate: new Date(response.data.creationDate) }

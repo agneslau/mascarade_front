@@ -50,11 +50,8 @@ export default defineComponent({
       return this.aipSession.aips.filter((aip: Aip) => aip.characterId === this.characterId)[0]
     },
     saveAip(aip: Aip) {
-      console.log('save')
-      console.log(aip)
       AipService.addAipToSession(aip, this.aipSession.id).then(
         (response: Aip) => {
-          console.log(response)
           this.aipSession.aips.push(response)
         },
         (error) => {
@@ -63,7 +60,6 @@ export default defineComponent({
       )
     },
     addExpenditure() {
-      console.log(this.aipSession.aips[0])
       this.aipSession.aips[0].expenditures = this.aipSession.aips[0].expenditures
         ? [...this.aipSession.aips[0].expenditures, createEmptyExpenditure()]
         : [createEmptyExpenditure()]
@@ -81,8 +77,11 @@ export default defineComponent({
 <template>
   <div class="aip_session_card">
     <div class="aip_session_card__info">
-      <b-icon v-if="aipSession.aips.length > 0" icon="check-circle" type="is-success"></b-icon>
-      <b-icon v-else icon="close-circle" type="is-danger"></b-icon>
+      <div class="aip_session_card__info__presence-icon">
+        <b-icon v-if="aipSession.aips.length > 0" icon="check-circle" type="is-success"></b-icon>
+        <b-icon v-else icon="close-circle" type="is-danger"></b-icon>
+      </div>
+
       <p>
         <strong>{{ aipSession.name }} </strong> :
         {{ aipSession.beginDate.toLocaleDateString('fr-FR') }} -
@@ -91,21 +90,35 @@ export default defineComponent({
     </div>
     <div class="aip_session_card__status">
       <div class="aip_session_card__status__tags">
-        <b-tag type="is-info" v-if="aipSession.isRendered">Rendue</b-tag>
-        <b-tag type="is-warning" v-if="aipSession.isClosed && !aipSession.isRendered">Fermée</b-tag>
-        <b-tag type="is-success" v-if="!aipSession.isClosed">Ouverte</b-tag>
+        <b-tag type="is-info" v-if="aipSession.aips.length > 0 && aipSession.aips[0].isRendered"
+          >Rendue</b-tag
+        >
+        <b-tag
+          type="is-warning"
+          v-if="
+            aipSession.aips.length > 0 &&
+            aipSession.aips[0].isClosed &&
+            !aipSession.aips[0].isRendered
+          "
+          >Fermée</b-tag
+        >
+        <b-tag type="is-success" v-if="aipSession.aips.length > 0 && !aipSession.aips[0].isClosed"
+          >Ouverte</b-tag
+        >
       </div>
       <div class="aip_session_card__status__actions">
         <b-icon
-          v-if="!aipSession.isClosed"
+          v-if="
+            !aipSession.isClosed || (aipSession.aips.length > 0 && !aipSession.aips[0].isClosed)
+          "
           @click="openAipEditModal()"
           icon="chevron-right-box"
-          type="is-success"
+          type="is-info"
         ></b-icon>
 
         <b-icon
-          v-if="aipSession.isClosed"
-          @click="console.log('see')"
+          v-if="aipSession.aips.length > 0 && aipSession.aips[0].isClosed"
+          @click="openAipEditModal()"
           icon="eye"
           type="is-info"
         ></b-icon>
@@ -143,6 +156,13 @@ export default defineComponent({
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    &__presence-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 5px;
+    }
   }
 
   &__status {

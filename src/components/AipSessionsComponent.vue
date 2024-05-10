@@ -1,4 +1,7 @@
 <template>
+  <div class="title">
+    <h1>Interparties</h1>
+  </div>
   <aip-session-form-component
     :aip-session="emptyAipSession"
     :is-new="true"
@@ -50,9 +53,6 @@ export default defineComponent({
     )
   },
   methods: {
-    openNewAipSession() {
-      console.log('open new aip session')
-    },
     addAipSession(aipSession: AipSession) {
       AipService.addAipSession(aipSession).then(
         (response: AipSession) => {
@@ -136,7 +136,6 @@ export default defineComponent({
             : 'Créée'
     },
     deleteAipSession(aipSessionToDelete: AipSession) {
-      console.log('delete aip session')
       AipService.deleteAipSession(aipSessionToDelete.id).then(
         (response) => {
           this.aipSessions = this.aipSessions.filter(
@@ -152,7 +151,6 @@ export default defineComponent({
       )
     },
     saveAipSession(aipSession: AipSession) {
-      console.log('save aip session')
       AipService.saveAipSession(aipSession).then(
         (response: AipSession) => {
           this.aipSessions = this.aipSessions.map((aipSession) =>
@@ -167,3 +165,22 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped lang="scss">
+.title {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: lightyellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+}
+</style>

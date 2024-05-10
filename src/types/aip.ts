@@ -28,7 +28,7 @@ export function createEmptyAip(characterId: string): Aip {
     challenges: [] as Challenge[],
     hunts: [
       {
-        huntType: HuntType.AIP,
+        type: HuntType.AIP,
         description: ''
       }
     ] as Hunt[],

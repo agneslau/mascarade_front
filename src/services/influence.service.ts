@@ -14,12 +14,10 @@ class InfluenceService {
     )
   }
   addInfluences(influences: Influence[]): Promise<AxiosResponse<Influence[]>> {
-    console.log(influences)
     return InfluenceApi.addInfluences(influences)
   }
 
   editInfluences(influences: Influence[]): Promise<AxiosResponse<Influence[]>> {
-    console.log(influences)
     return InfluenceApi.editInfluences(influences)
   }
 }

@@ -12,6 +12,7 @@ const BoardPlayer = () => import('./components/BoardPlayerComponent.vue')
 const Characters = () => import('./components/CharactersComponent.vue')
 const PlayerCharacters = () => import('./components/PlayerCharactersComponent.vue')
 const AipSessions = () => import('./components/AipSessionsComponent.vue')
+const AipSession = () => import('./components/AipSessionComponent.vue')
 const CharacterVue = () => import('./components/CharacterComponent.vue')
 
 const routes = [
@@ -74,10 +75,17 @@ const routes = [
         component: Characters
       },
       {
-        path: 'interparties',
-        name: 'interparties',
+        path: 'sessions',
+        name: 'sessions',
         // lazy-loaded
         component: AipSessions
+      },
+      {
+        path: 'sessions/:id',
+        name: 'session',
+        // lazy-loaded
+        component: AipSession,
+        props: true
       }
     ]
   },

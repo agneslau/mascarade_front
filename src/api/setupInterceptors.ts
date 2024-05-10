@@ -20,12 +20,6 @@ const setup = (store) => {
       return res
     },
     async (err) => {
-      const originalConfig = err.config
-      console.log(err)
-      console.log('originalConfig')
-      console.log(originalConfig)
-      console.log(originalConfig.baseURL)
-
       if (err.response?.status === 401) {
         store.dispatch('auth/logout')
       }
