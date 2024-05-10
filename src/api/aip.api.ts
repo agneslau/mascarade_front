@@ -24,6 +24,9 @@ class AipApi {
   addAipToSession(aip: Aip, aipSessionId: string): Promise<AxiosResponse<Aip>> {
     return api.post(`${API_URL}/sessions/${aipSessionId}`, aip)
   }
+  getAipSessionById(aipSessionId: string): Promise<AxiosResponse<AipSession>> {
+    return api.get(`${API_URL}/sessions/${aipSessionId}`)
+  }
 }
 
 export default new AipApi()

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="characters_title">Tes personnages</h1>
+    <h1 class="title">Tes personnages</h1>
     <div v-for="character in characters" :key="character.id">
       <PlayerCharacterCard @click="openCharacter(character)" :character="character" />
     </div>
@@ -27,7 +27,6 @@ export default defineComponent({
   },
   computed: {
     currentUser() {
-      console.log('current user :', this.$store.state.auth.user)
       return this.$store.state.auth.user
     }
   },
@@ -56,8 +55,6 @@ export default defineComponent({
       )
     },
     openCharacter(character: Character) {
-      console.log(character.name)
-      //Redirect to Character route with character as prop
       this.$router.push({ path: 'character/' + character.id })
     }
   }
@@ -65,9 +62,21 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.characters_title {
-  text-align: center;
-  font-size: 2rem;
-  margin: 2rem 0;
+.title {
+  border: 1px solid black;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: lightyellow;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: baseline;
+  margin-bottom: 2rem;
+
+  h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 10px;
+  }
 }
 </style>

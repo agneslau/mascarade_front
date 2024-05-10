@@ -18,7 +18,7 @@
       <b-navbar-dropdown v-if="currentUser && showStorytellerBoard" label="Board Conteur">
         <b-navbar-item tag="router-link" to="/storyteller">Base Test</b-navbar-item>
         <b-navbar-item tag="router-link" to="/storyteller/characters">Personnages</b-navbar-item>
-        <b-navbar-item tag="router-link" to="/storyteller/interparties">Interparties</b-navbar-item>
+        <b-navbar-item tag="router-link" to="/storyteller/sessions">Interparties</b-navbar-item>
       </b-navbar-dropdown>
     </template>
 
@@ -43,7 +43,6 @@
 export default {
   computed: {
     currentUser() {
-      console.log('current user :', this.$store.state.auth.user)
       return this.$store.state.auth.user
     },
     showAdminBoard() {

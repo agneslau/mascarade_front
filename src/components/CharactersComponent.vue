@@ -1,5 +1,4 @@
 <template>
-  <p>Characters</p>
   <b-button @click="openNewCharacter" rounded type="is-primary">
     <b-icon icon="plus"></b-icon>
   </b-button>

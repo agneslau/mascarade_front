@@ -32,6 +32,11 @@ export default defineComponent({
     character: {
       type: Object as () => Character,
       required: true
+    },
+    isStoryTeller: {
+      type: Boolean,
+      required: false,
+      default: false
     }
   },
   data() {
@@ -75,7 +80,6 @@ export default defineComponent({
       this.checkChallenges()
       this.checkHunts()
       this.checkVampireActions()
-      console.log('saving')
       if (
         this.challengesAttributes.isValid &&
         this.huntsAttributes.isTypeValid &&
@@ -83,7 +87,6 @@ export default defineComponent({
         this.vampireActionsAttributes.isValid
       ) {
         this.$emit('saveAip', this.aip)
-        console.log('saved')
         this.$emit('close')
       }
     },
@@ -143,6 +146,12 @@ export default defineComponent({
     },
     removeVampireAction(index: number) {
       this.aip.vampireActions.splice(index, 1)
+    },
+    isDisabledForPlayer() {
+      return this.isStoryTeller
+    },
+    isDisabledForStoryTeller() {
+      return !this.isStoryTeller
     }
   }
 })
@@ -174,6 +183,7 @@ export default defineComponent({
                   v-for="n in 3"
                   v-model="aip.challenges[n - 1]"
                   placeholder="Choisis un challenge"
+                  :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
                 >
                   <option v-for="challenge in Challenge" :key="challenge">{{ challenge }}</option>
                 </b-select>
@@ -183,6 +193,7 @@ export default defineComponent({
                   v-for="n in 3"
                   v-model="aip.challenges[n + 2]"
                   placeholder="Choisis un challenge"
+                  :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
                 >
                   <option v-for="challenge in Challenge" :key="challenge">{{ challenge }}</option>
                 </b-select>
@@ -192,12 +203,17 @@ export default defineComponent({
                   v-for="n in 3"
                   v-model="aip.challenges[n + 5]"
                   placeholder="Choisis un challenge"
+                  :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
                 >
                   <option v-for="challenge in Challenge" :key="challenge">{{ challenge }}</option>
                 </b-select>
               </div>
               <div class="challenges__row">
-                <b-select v-model="aip.challenges[9]" placeholder="Choisis un challenge">
+                <b-select
+                  v-model="aip.challenges[9]"
+                  placeholder="Choisis un challenge"
+                  :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+                >
                   <option v-for="challenge in Challenge" :key="challenge">{{ challenge }}</option>
                 </b-select>
               </div>
@@ -212,7 +228,11 @@ export default defineComponent({
             :type="huntsAttributes.huntsTypeType"
             :message="huntsAttributes.huntsTypeMessage"
           >
-            <b-select v-model="aip.hunts[0].type" placeHolder="Choisis un type de chasse">
+            <b-select
+              v-model="aip.hunts[0].type"
+              placeHolder="Choisis un type de chasse"
+              :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+            >
               <option v-for="huntType in HuntType" :key="huntType">{{ huntType }}</option>
             </b-select>
           </b-field>
@@ -221,7 +241,11 @@ export default defineComponent({
             :type="huntsAttributes.descriptionType"
             :message="huntsAttributes.descriptionMessage"
           >
-            <b-input v-model="aip.hunts[0].description" type="text" />
+            <b-input
+              v-model="aip.hunts[0].description"
+              :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+              type="text"
+            />
           </b-field>
         </div>
 
@@ -229,16 +253,48 @@ export default defineComponent({
           <h1><b-icon icon="cash-multiple" />Etape 3 : Les dépenses</h1>
           <div v-for="(expenditure, index) in aip.expenditures">
             <b-field label="Montant">
-              <b-input v-model="expenditure.sum" type="number" />
+              <b-input
+                v-model="expenditure.sum"
+                type="number"
+                :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+              />
             </b-field>
             <b-field label="Description">
-              <b-input v-model="expenditure.reason" type="text" />
+              <b-input
+                v-model="expenditure.reason"
+                type="text"
+                :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+              />
             </b-field>
-            <b-button @click="removeExpenditure(index)" rounded type="is-primary">
+
+            <b-field
+              v-if="(isStoryTeller && aip.isClosed) || (!isStoryTeller && aip.isRendered)"
+              label="Réponse des conteurs"
+            >
+              <b-input
+                v-model="expenditure.response"
+                type="textarea"
+                aria-placeholder="Réponse des conteurs"
+                :disabled="aip.isRendered"
+              />
+            </b-field>
+
+            <b-button
+              v-if="(!isStoryTeller && !aip.isClosed) || isStoryTeller"
+              @click="removeExpenditure(index)"
+              rounded
+              type="is-primary"
+              :disabled="isStoryTeller"
+            >
               <b-icon icon="delete"></b-icon>
             </b-button>
           </div>
-          <b-button @click="addExpenditure" rounded type="is-primary">
+          <b-button
+            v-if="(!isStoryTeller && !aip.isClosed) || isStoryTeller"
+            @click="addExpenditure"
+            rounded
+            type="is-primary"
+          >
             <b-icon icon="plus"></b-icon>
           </b-button>
         </div>
@@ -254,27 +310,67 @@ export default defineComponent({
               :type="vampireActionsAttributes.vampireActionsType"
               :message="vampireActionsAttributes.vampireActionsMessage"
             >
-              <b-input v-model="vampireAction.title" type="text" aria-placeholder="titre" />
+              <b-input
+                v-model="vampireAction.title"
+                type="text"
+                aria-placeholder="titre"
+                :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
+              />
             </b-field>
             <b-field label="description">
               <b-input
                 v-model="vampireAction.description"
                 type="textarea"
                 aria-placeholder="description"
+                :disabled="isStoryTeller || (!isStoryTeller && aip.isClosed)"
               />
             </b-field>
-            <b-button @click="removeVampireAction(index)" rounded type="is-primary">
+            <b-field
+              v-if="(isStoryTeller && aip.isClosed) || (!isStoryTeller && aip.isRendered)"
+              label="Réponse des conteurs"
+            >
+              <b-input
+                v-model="vampireAction.response"
+                type="textarea"
+                aria-placeholder="Réponse des conteurs"
+                :disabled="aip.isRendered"
+              />
+            </b-field>
+            <b-field
+              v-if="aip.isClosed && isStoryTeller"
+              label="Notes pour les Conteurs, non visibles par les joueurs"
+            >
+              <b-input v-model="vampireAction.notes" type="textarea" aria-placeholder="Notes" />
+            </b-field>
+            <b-button
+              @click="removeVampireAction(index)"
+              rounded
+              type="is-primary"
+              v-if="(!isStoryTeller && !aip.isClosed) || isStoryTeller"
+            >
               <b-icon icon="delete"></b-icon>
             </b-button>
           </div>
-          <b-button @click="addVampireAction" rounded type="is-primary">
+          <b-button
+            v-if="(!isStoryTeller && !aip.isClosed) || isStoryTeller"
+            @click="addVampireAction"
+            rounded
+            type="is-primary"
+          >
             <b-icon icon="plus"></b-icon>
           </b-button>
         </div>
       </section>
       <footer class="modal-card-foot">
         <b-button label="Fermer" @click="$emit('close')" />
-        <b-button label="Sauver" type="is-primary" @click="save()" />
+        <b-button
+          v-if="
+            (isStoryTeller && aip.isClosed && !aip.isRendered) || (!isStoryTeller && !aip.isClosed)
+          "
+          label="Sauver"
+          type="is-primary"
+          @click="save()"
+        />
       </footer>
     </div>
   </form>
@@ -290,9 +386,15 @@ h1 {
   border-radius: 5px;
 }
 
-.modal-card-body__section {
-  margin-bottom: 1rem;
-  border-top: 1px solid black;
+.modal-card {
+  width: 800px;
+}
+
+.modal-card-body {
+  &__section {
+    margin-bottom: 1rem;
+    border-top: 1px solid black;
+  }
 }
 
 .challenges {

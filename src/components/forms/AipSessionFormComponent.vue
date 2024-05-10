@@ -39,7 +39,6 @@ export default defineComponent({
       }
 
       if (this.nameAttributes.isNameValid) {
-        console.log('add aip session')
         this.$emit('addAipSession', this.aipSession)
         this.nameAttributes.nameType = ''
       }
@@ -48,8 +47,10 @@ export default defineComponent({
       this.$emit('deleteAipSession', this.aipSession)
     },
     saveSession() {
-      console.log('save session')
       this.$emit('saveSession', this.aipSession)
+    },
+    openSession() {
+      this.$router.push({ path: 'sessions/' + this.aipSession.id })
     }
   }
 })
@@ -88,11 +89,14 @@ export default defineComponent({
       <b-button :disabled="aipSession.isOpen" @click="deleteAipSession">
         <b-icon icon="delete" type="is-danger"></b-icon>
       </b-button>
+      <b-button v-if="aipSession.aips?.length > 0" @click="openSession">
+        <b-icon icon="eye" type="is-info"></b-icon>
+      </b-button>
     </div>
 
     <div v-if="isNew" class="aip_session_form___buttons">
-      <b-button @click="addAipSession">
-        <b-icon icon="plus" type="is-success"></b-icon>
+      <b-button rounded @click="addAipSession" type="is-primary">
+        <b-icon icon="plus"></b-icon>
       </b-button>
     </div>
   </div>
@@ -114,7 +118,7 @@ export default defineComponent({
     flex-direction: row;
     justify-content: flex-start;
     gap: 0.5rem;
-    width: 100px;
+    min-width: 150px;
   }
 }
 </style>

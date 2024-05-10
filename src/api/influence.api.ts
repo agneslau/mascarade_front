@@ -12,7 +12,6 @@ class InfluenceApi {
     return api.post(API_URL, influences)
   }
   editInfluences(influences: Influence[]): Promise<AxiosResponse<Influence[]>> {
-    console.log(influences)
     return api.put(API_URL, influences)
   }
 }
