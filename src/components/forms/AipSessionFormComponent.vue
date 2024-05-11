@@ -27,7 +27,7 @@ export default defineComponent({
     }
   },
   methods: {
-    addAipSession() {
+    addAipSession(): void {
       if (this.aipSession.name === '') {
         this.nameAttributes.nameType = 'is-danger'
         this.nameAttributes.nameMessage = 'Le nom est obligatoire'
@@ -43,13 +43,13 @@ export default defineComponent({
         this.nameAttributes.nameType = ''
       }
     },
-    deleteAipSession() {
+    deleteAipSession(): void {
       this.$emit('deleteAipSession', this.aipSession)
     },
-    saveSession() {
+    saveSession(): void {
       this.$emit('saveSession', this.aipSession)
     },
-    openSession() {
+    openSession(): void {
       this.$router.push({ path: 'sessions/' + this.aipSession.id })
     }
   }

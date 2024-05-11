@@ -1,5 +1,6 @@
 import axiosInstance from './api'
 import TokenService from '@/services/token.service'
+import router from '@/router'
 
 const setup = (store) => {
   axiosInstance.interceptors.request.use(
@@ -20,8 +21,9 @@ const setup = (store) => {
       return res
     },
     async (err) => {
-      if (err.response?.status === 401) {
+      if (err.response?.status === 403) {
         store.dispatch('auth/logout')
+        router.push('/login')
       }
 
       /*if (originalConfig.url !== '/auth/authenticate' && err.response) {

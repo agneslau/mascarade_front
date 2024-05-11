@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import HomeComponent from './components/HomeComponent.vue'
 import LoginComponent from './components/LoginComponent.vue'
-import Test1 from '@/components/tests/Test1.vue'
 
 // lazy-loaded
 const ProfileComponent = () => import('./components/ProfileComponent.vue')
@@ -88,11 +87,6 @@ const routes = [
         props: true
       }
     ]
-  },
-  {
-    path: '/test',
-    name: 'test',
-    component: Test1
   }
 ]
 

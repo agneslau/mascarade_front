@@ -1,12 +1,3 @@
-<template>
-  <div>
-    <h1 class="title">Tes personnages</h1>
-    <div v-for="character in characters" :key="character.id">
-      <PlayerCharacterCard @click="openCharacter(character)" :character="character" />
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { Character } from '@/types/character'
@@ -14,6 +5,7 @@ import CharacterService from '@/services/character.service'
 import type { MinimalUser } from '@/types/minimalUser'
 import UserService from '@/services/user.service'
 import PlayerCharacterCard from '@/components/cards/PlayerCharacterCard.vue'
+import type { AuthResponse } from '@/types/authResponse'
 
 export default defineComponent({
   name: 'PlayerCharactersComponent.vue',
@@ -26,7 +18,7 @@ export default defineComponent({
     }
   },
   computed: {
-    currentUser() {
+    currentUser(): AuthResponse {
       return this.$store.state.auth.user
     }
   },
@@ -60,6 +52,15 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <div>
+    <h1 class="title">Tes personnages</h1>
+    <div v-for="character in characters" :key="character.id">
+      <PlayerCharacterCard @click="openCharacter(character)" :character="character" />
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .title {

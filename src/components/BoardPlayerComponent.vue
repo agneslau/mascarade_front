@@ -1,11 +1,3 @@
-<template>
-  <div class="container">
-    <div>
-      <router-view></router-view>
-    </div>
-  </div>
-</template>
-
 <script>
 export default {
   name: 'BoardPlayerComponent',
@@ -16,3 +8,11 @@ export default {
   }
 }
 </script>
+
+<template>
+  <div class="container">
+    <div>
+      <router-view></router-view>
+    </div>
+  </div>
+</template>

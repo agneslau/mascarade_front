@@ -38,7 +38,7 @@ export function createEmptyAip(characterId: string): Aip {
     globalActions: [] as GlobalAction[],
     indirectAttackActions: [] as IndirectAttackAction[],
     response: '',
-    isOpen: false,
+    isOpen: true,
     isClosed: false,
     isRendered: false
   }

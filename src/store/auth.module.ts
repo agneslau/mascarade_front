@@ -1,4 +1,6 @@
-import AuthService from '@/services/auth.service.js'
+import AuthService from '@/services/auth.service'
+import type { AuthRequest } from '@/types/authRequest'
+import type { AuthResponse } from '@/types/authResponse'
 
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user
@@ -9,11 +11,11 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-    login({ commit }, user) {
-      return AuthService.login(user).then(
-        (user) => {
-          commit('loginSuccess', user)
-          return Promise.resolve(user)
+    login({ commit }, authRequest: AuthRequest): Promise<AuthResponse> {
+      return AuthService.login(authRequest).then(
+        (authResponse: AuthResponse) => {
+          commit('loginSuccess', authResponse)
+          return Promise.resolve(authResponse)
         },
         (error) => {
           commit('loginFailure')
@@ -21,17 +23,16 @@ export const auth = {
         }
       )
     },
-    logout({ commit }) {
+    logout({ commit }): void {
       AuthService.logout()
       commit('logout')
-      //this.$router.push('/home')
     },
-    refreshToken({ commit }, accessToken) {
+    refreshToken({ commit }, accessToken: string): void {
       commit('refreshToken', accessToken)
     }
   },
   mutations: {
-    loginSuccess(state, user) {
+    loginSuccess(state, user: AuthResponse) {
       state.status.loggedIn = true
       state.user = user
     },
@@ -43,7 +44,7 @@ export const auth = {
       state.status.loggedIn = false
       state.user = null
     },
-    refreshToken(state, accessToken) {
+    refreshToken(state, accessToken: string) {
       state.status.loggedIn = true
       state.user = { ...state.user, accessToken: accessToken }
     }

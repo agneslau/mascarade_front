@@ -1,16 +1,3 @@
-<template>
-  <div class="character_card">
-    <div class="character_card__info">
-      <div class="character_card__info__name">
-        <h3>{{ character.name }}</h3>
-      </div>
-      <div class="character_card__info__clan">
-        <p>{{ character.clan }}</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { Character } from '@/types/character'
@@ -25,6 +12,19 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <div class="character_card">
+    <div class="character_card__info">
+      <div class="character_card__info__name">
+        <h3>{{ character.name }}</h3>
+      </div>
+      <div class="character_card__info__clan">
+        <p>{{ character.clan }}</p>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .character_card {

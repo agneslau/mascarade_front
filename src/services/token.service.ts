@@ -1,10 +1,12 @@
+import type { AuthResponse } from '@/types/authResponse'
+
 class TokenService {
-  getLocalRefreshToken() {
+  getLocalRefreshToken(): string {
     const user = JSON.parse(localStorage.getItem('user'))
     return user?.refreshToken
   }
 
-  getLocalAccessToken() {
+  getLocalAccessToken(): string {
     const user = JSON.parse(localStorage.getItem('user'))
     return user?.accessToken
   }
@@ -15,15 +17,15 @@ class TokenService {
     localStorage.setItem('user', JSON.stringify(user))
   }
 
-  getUser() {
+  getUser(): AuthResponse {
     return JSON.parse(localStorage.getItem('user'))
   }
 
-  setUser(user) {
+  setUser(user: AuthResponse): void {
     localStorage.setItem('user', JSON.stringify(user))
   }
 
-  removeUser() {
+  removeUser(): void {
     localStorage.removeItem('user')
   }
 }

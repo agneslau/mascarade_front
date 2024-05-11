@@ -1,3 +1,22 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { AuthResponse } from '@/types/authResponse'
+
+export default defineComponent({
+  name: 'ProfileComponent',
+  computed: {
+    currentUser(): AuthResponse {
+      return this.$store.state.auth.user
+    }
+  },
+  mounted() {
+    if (!this.currentUser) {
+      this.$router.push('/login')
+    }
+  }
+})
+</script>
+
 <template>
   <div class="container">
     <header class="jumbotron">
@@ -5,10 +24,6 @@
         Profile de <strong>{{ currentUser.name }}</strong>
       </h3>
     </header>
-    <p>
-      <strong>Token:</strong>
-      {{ currentUser.accessToken.substring(0, 20) }}
-    </p>
     <p>
       <strong>Id:</strong>
       {{ currentUser.id }}
@@ -23,19 +38,3 @@
     </ul>
   </div>
 </template>
-
-<script>
-export default {
-  name: 'ProfileComponent',
-  computed: {
-    currentUser() {
-      return this.$store.state.auth.user
-    }
-  },
-  mounted() {
-    if (!this.currentUser) {
-      this.$router.push('/login')
-    }
-  }
-}
-</script>
