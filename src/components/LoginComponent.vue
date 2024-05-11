@@ -1,3 +1,52 @@
+<script lang="ts">
+import { defineComponent } from 'vue'
+import type { AuthRequest } from '@/types/authRequest'
+
+export default defineComponent({
+  name: 'LoginComponent',
+  data() {
+    return {
+      isComponentModalActive: true,
+      formProps: {
+        email: 'adresse@email.com',
+        password: 'tonMotDePasse'
+      },
+      loading: false,
+      message: ''
+    }
+  },
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn
+    }
+  },
+  updated() {
+    this.isComponentModalActive = true
+  },
+  methods: {
+    handleLogin() {
+      this.loading = true
+      const authRequest = {
+        email: this.formProps.email,
+        password: this.formProps.password
+      } as AuthRequest
+      this.$store.dispatch('auth/login', authRequest).then(
+        () => {
+          this.$router.push('/home')
+        },
+        (error) => {
+          this.loading = false
+          this.message = error.response?.data?.message || error.message || error.toString()
+        }
+      )
+    },
+    closeLoginModale() {
+      this.$router.push('/')
+    }
+  }
+})
+</script>
+
 <template>
   <b-modal
     v-model="isComponentModalActive"
@@ -49,47 +98,3 @@
     </template>
   </b-modal>
 </template>
-
-<script>
-export default {
-  name: 'LoginComponent',
-  data() {
-    return {
-      isComponentModalActive: true,
-      formProps: {
-        email: 'adresse@email.com',
-        password: 'tonMotDePasse'
-      },
-      loading: false,
-      message: ''
-    }
-  },
-  computed: {
-    loggedIn() {
-      return this.$store.state.auth.status.loggedIn
-    }
-  },
-  methods: {
-    handleLogin() {
-      this.loading = true
-      const user = {
-        email: this.formProps.email,
-        password: this.formProps.password
-      }
-
-      this.$store.dispatch('auth/login', user).then(
-        () => {
-          this.$router.push('/home')
-        },
-        (error) => {
-          this.loading = false
-          this.message = error.response?.data?.message || error.message || error.toString()
-        }
-      )
-    },
-    closeLoginModale() {
-      this.$router.push('/')
-    }
-  }
-}
-</script>

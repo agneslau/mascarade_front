@@ -1,10 +1,9 @@
 import type { Role } from '@/types/enums/role'
 
-export interface User {
-  id: string
+export interface AuthResponse {
   name: string
   email: string
+  accessToken: string
+  refreshToken: string
   roles: Role[]
-  password: string
-  charactersIds: string[]
 }

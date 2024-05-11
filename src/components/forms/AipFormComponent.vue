@@ -76,7 +76,7 @@ export default defineComponent({
     }
   },
   methods: {
-    save() {
+    save(): void {
       this.checkChallenges()
       this.checkHunts()
       this.checkVampireActions()
@@ -90,7 +90,7 @@ export default defineComponent({
         this.$emit('close')
       }
     },
-    checkChallenges() {
+    checkChallenges(): void {
       this.challengesAttributes.isValid = this.aip.challenges.length === 10
       this.challengesAttributes.challengesType = this.challengesAttributes.isValid
         ? 'is-success'
@@ -99,7 +99,7 @@ export default defineComponent({
         ? ''
         : 'Il faut 10 challenges'
     },
-    checkHunts() {
+    checkHunts(): void {
       this.huntsAttributes.isTypeValid =
         (this.aip.hunts[0].type == HuntType.AIP && this.aip.vampireActions.length > 0) ||
         this.aip.hunts[0].type == HuntType.TROUPEAU
@@ -120,7 +120,7 @@ export default defineComponent({
         ? ''
         : 'Il faut une description'
     },
-    checkVampireActions() {
+    checkVampireActions(): void {
       this.vampireActionsAttributes.isValid =
         this.aip.hunts[0]?.type == HuntType.AIP
           ? this.aip.vampireActions.map((vampireAction) => vampireAction.title).indexOf('Chasse') >
@@ -135,23 +135,17 @@ export default defineComponent({
         ? ''
         : 'Il faut une action vampirique "Chasse"'
     },
-    addExpenditure() {
+    addExpenditure(): void {
       this.$emit('addExpenditure')
     },
-    removeExpenditure(index: number) {
+    removeExpenditure(index: number): void {
       this.aip.expenditures.splice(index, 1)
     },
-    addVampireAction() {
+    addVampireAction(): void {
       this.$emit('addVampireAction')
     },
-    removeVampireAction(index: number) {
+    removeVampireAction(index: number): void {
       this.aip.vampireActions.splice(index, 1)
-    },
-    isDisabledForPlayer() {
-      return this.isStoryTeller
-    },
-    isDisabledForStoryTeller() {
-      return !this.isStoryTeller
     }
   }
 })

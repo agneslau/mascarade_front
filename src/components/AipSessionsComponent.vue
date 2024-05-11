@@ -1,22 +1,3 @@
-<template>
-  <div class="title">
-    <h1>Interparties</h1>
-  </div>
-  <aip-session-form-component
-    :aip-session="emptyAipSession"
-    :is-new="true"
-    @add-aip-session="addAipSession"
-  />
-  <div v-for="aipSession in aipSessions" :key="aipSession.id">
-    <aip-session-form-component
-      :aip-session="aipSession"
-      :is-new="false"
-      @delete-aip-session="confirmDeleteAipSession"
-      @save-session="confirmSaveSession"
-    />
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import AipSessionFormComponent from '@/components/forms/AipSessionFormComponent.vue'
@@ -53,7 +34,7 @@ export default defineComponent({
     )
   },
   methods: {
-    addAipSession(aipSession: AipSession) {
+    addAipSession(aipSession: AipSession): void {
       AipService.addAipSession(aipSession).then(
         (response: AipSession) => {
           this.aipSessions.push(response)
@@ -65,10 +46,10 @@ export default defineComponent({
 
       this.reinitEmptyAipSession()
     },
-    reinitEmptyAipSession() {
+    reinitEmptyAipSession(): void {
       this.emptyAipSession = createEmptyAipSession()
     },
-    confirmDeleteAipSession(aipSession: AipSession) {
+    confirmDeleteAipSession(aipSession: AipSession): void {
       this.$buefy.dialog.confirm({
         title: "Supprimer une session d'AIP",
         message:
@@ -96,7 +77,7 @@ export default defineComponent({
         }
       })
     },
-    confirmSaveSession(aipSession: AipSession) {
+    confirmSaveSession(aipSession: AipSession): void {
       this.$buefy.dialog.confirm({
         title: "Modifier une session d'AIP",
         message:
@@ -126,7 +107,7 @@ export default defineComponent({
         }
       })
     },
-    getAipSessionState(aipSession: AipSession) {
+    getAipSessionState(aipSession: AipSession): string {
       return aipSession.isRendered
         ? 'Rendu'
         : aipSession.isClosed
@@ -135,9 +116,9 @@ export default defineComponent({
             ? 'Ouverte'
             : 'Créée'
     },
-    deleteAipSession(aipSessionToDelete: AipSession) {
+    deleteAipSession(aipSessionToDelete: AipSession): void {
       AipService.deleteAipSession(aipSessionToDelete.id).then(
-        (response) => {
+        () => {
           this.aipSessions = this.aipSessions.filter(
             (aipSession) => aipSession.id !== aipSessionToDelete.id
           )
@@ -150,7 +131,7 @@ export default defineComponent({
         }
       )
     },
-    saveAipSession(aipSession: AipSession) {
+    saveAipSession(aipSession: AipSession): void {
       AipService.saveAipSession(aipSession).then(
         (response: AipSession) => {
           this.aipSessions = this.aipSessions.map((aipSession) =>
@@ -165,6 +146,25 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <div class="title">
+    <h1>Interparties</h1>
+  </div>
+  <aip-session-form-component
+    :aip-session="emptyAipSession"
+    :is-new="true"
+    @add-aip-session="addAipSession"
+  />
+  <div v-for="aipSession in aipSessions" :key="aipSession.id">
+    <aip-session-form-component
+      :aip-session="aipSession"
+      :is-new="false"
+      @delete-aip-session="confirmDeleteAipSession"
+      @save-session="confirmSaveSession"
+    />
+  </div>
+</template>
 
 <style scoped lang="scss">
 .title {

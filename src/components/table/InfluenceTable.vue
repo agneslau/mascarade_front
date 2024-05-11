@@ -1,55 +1,3 @@
-<template>
-  <b-field label="Influences">
-    <b-button rounded type="is-primary" @click="openNewInfluence()">
-      <b-icon icon="plus"></b-icon>
-    </b-button>
-    <b-table :data="influences as Influence[]">
-      <b-table-column field="id" label="id" v-slot="props">
-        {{ props.row.id }}
-      </b-table-column>
-      <b-table-column field="name" label="nom" v-slot="props">
-        {{ props.row.name }}
-      </b-table-column>
-      <b-table-column field="category" label="catégorie" v-slot="props">
-        {{ props.row.category }}
-      </b-table-column>
-      <b-table-column field="specialty" label="spécialité" v-slot="props">
-        {{ props.row.specialty }}
-      </b-table-column>
-      <b-table-column field="level" label="niveau" numeric v-slot="props">
-        {{ props.row.level }}
-      </b-table-column>
-      <b-table-column fiels="district" label="district" v-slot="props">
-        {{ props.row.district }}
-      </b-table-column>
-      <b-table-column field="actions" label="actions" v-slot="props">
-        <div class="buttons">
-          <b-button @click="openEditInfluence(props.row)">
-            <b-icon icon="pencil"></b-icon>
-          </b-button>
-          <b-button @click="confirmDeleteInfluence(props.row)">
-            <b-icon icon="delete" type="is-danger"></b-icon>
-          </b-button>
-        </div>
-      </b-table-column>
-    </b-table>
-  </b-field>
-  <b-modal
-    v-model="influenceAttributes.isInfluenceModalOpen"
-    has-modal-card
-    :destroy-on-hide="true"
-  >
-    <template #default="props">
-      <InfluenceFormComponent
-        @close="props.close()"
-        @addInfluence="addInfluence"
-        @editInfluence="editInfluence"
-        :influence="influenceAttributes.influenceProps"
-      />
-    </template>
-  </b-modal>
-</template>
-
 <script lang="ts">
 import InfluenceFormComponent from '@/components/forms/InfluenceFormComponent.vue'
 import { type Influence } from '@/types/influence'
@@ -101,10 +49,10 @@ export default defineComponent({
       this.$emit('addInfluence', influence)
       //this.formData.influences.push(influence)
     },
-    editInfluence(influence: Influence) {
+    editInfluence(influence: Influence): void {
       this.$emit('editInfluence', influence)
     },
-    confirmDeleteInfluence(influence: Influence) {
+    confirmDeleteInfluence(influence: Influence): void {
       this.$buefy.dialog.confirm({
         title: 'Supprimer un personnage',
         message:
@@ -133,9 +81,61 @@ export default defineComponent({
         }
       })
     },
-    deleteInfluence(influence: Influence) {
+    deleteInfluence(influence: Influence): void {
       this.$emit('deleteInfluence', influence)
     }
   }
 })
 </script>
+
+<template>
+  <b-field label="Influences">
+    <b-button rounded type="is-primary" @click="openNewInfluence()">
+      <b-icon icon="plus"></b-icon>
+    </b-button>
+    <b-table :data="influences as Influence[]">
+      <b-table-column field="id" label="id" v-slot="props">
+        {{ props.row.id }}
+      </b-table-column>
+      <b-table-column field="name" label="nom" v-slot="props">
+        {{ props.row.name }}
+      </b-table-column>
+      <b-table-column field="category" label="catégorie" v-slot="props">
+        {{ props.row.category }}
+      </b-table-column>
+      <b-table-column field="specialty" label="spécialité" v-slot="props">
+        {{ props.row.specialty }}
+      </b-table-column>
+      <b-table-column field="level" label="niveau" numeric v-slot="props">
+        {{ props.row.level }}
+      </b-table-column>
+      <b-table-column fiels="district" label="district" v-slot="props">
+        {{ props.row.district }}
+      </b-table-column>
+      <b-table-column field="actions" label="actions" v-slot="props">
+        <div class="buttons">
+          <b-button @click="openEditInfluence(props.row)">
+            <b-icon icon="pencil"></b-icon>
+          </b-button>
+          <b-button @click="confirmDeleteInfluence(props.row)">
+            <b-icon icon="delete" type="is-danger"></b-icon>
+          </b-button>
+        </div>
+      </b-table-column>
+    </b-table>
+  </b-field>
+  <b-modal
+    v-model="influenceAttributes.isInfluenceModalOpen"
+    has-modal-card
+    :destroy-on-hide="true"
+  >
+    <template #default="props">
+      <InfluenceFormComponent
+        @close="props.close()"
+        @addInfluence="addInfluence"
+        @editInfluence="editInfluence"
+        :influence="influenceAttributes.influenceProps"
+      />
+    </template>
+  </b-modal>
+</template>

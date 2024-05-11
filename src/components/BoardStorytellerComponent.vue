@@ -1,13 +1,7 @@
-<template>
-  <div class="container">
-    <div>
-      <router-view></router-view>
-    </div>
-  </div>
-</template>
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-<script>
-export default {
+export default defineComponent({
   name: 'BoardStorytellerComponent',
   components: {},
   data() {
@@ -15,5 +9,13 @@ export default {
       content: ''
     }
   }
-}
+})
 </script>
+
+<template>
+  <div class="container">
+    <div>
+      <router-view></router-view>
+    </div>
+  </div>
+</template>
