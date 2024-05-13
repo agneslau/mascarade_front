@@ -2,7 +2,10 @@
 
 This is front-end application for Mascarade Project, for La Mascarade de Lille
 App will be run on 8081 port
-It should dialog with back-end application on 8080 port run locally
+It should dialog with back-end application on 8080 port run locally. To make it possible, you should add at project root a .env file containing following line :
+```
+VITE_APP_BASE_URL=http://localhost:8080/api/v1
+```
 
 ## Pre-requisite
 
