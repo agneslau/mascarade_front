@@ -15,14 +15,5 @@ COPY . .
 # Build the Vue.js application
 RUN npm run build
 
-# Stage 2: Serve the Vue.js application with Nginx
-FROM nginx:mainline-alpine3.19-perl
+CMD ["npm", "run", "dev"]
 
-# Copy the built Vue.js application from the previous stage
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx to serve the Vue.js application
-CMD ["nginx", "-g", "daemon off;"]
