@@ -60,7 +60,7 @@ export default defineComponent({
           <div class="modal-card" @close="props.close">
             <header class="modal-card-head">
               <b-icon icon="account" type="is-info" size="is-large"> </b-icon>
-              <p class="modal-card-title">Connection</p>
+              <p class="modal-card-title">Connexion</p>
               <button type="button" class="delete" @click="$emit('close')" />
             </header>
             <section class="modal-card-body">
@@ -76,7 +76,7 @@ export default defineComponent({
               </b-field>
             </section>
             <section class="modal-card-body">
-              <b-field label="Password">
+              <b-field label="Mot de Passe">
                 <b-input
                   type="password"
                   v-model="formProps.password"
@@ -89,8 +89,8 @@ export default defineComponent({
               </b-field>
             </section>
             <footer class="modal-card-foot">
-              <b-button label="Close" @click="$emit('close')" />
-              <b-button label="Login" type="is-primary" @click="handleLogin" />
+              <b-button label="Fermer" @click="$emit('close')" />
+              <b-button label="Se Connecter" type="is-primary" @click="handleLogin" />
             </footer>
           </div>
         </form>
