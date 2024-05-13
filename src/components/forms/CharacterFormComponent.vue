@@ -1,179 +1,3 @@
-<template>
-  <div>Character</div>
-  <form action="">
-    <div class="modal-card" style="width: auto">
-      <header class="modal-card-head">
-        <b-icon icon="bat" type="is-info" size="is-large"> </b-icon>
-        <p class="modal-card-title">{{ getTitle() }}</p>
-        <button type="button" class="delete" @click="$emit('close')" />
-      </header>
-      <section class="modal-card-body">
-        <p v-if="!isEdition()">
-          Attention : le nom du personnsage ne pourra plus être modifié après la création
-        </p>
-        <div class="model-card-body__section">
-          <b-field v-if="isEdition()" label="ID">
-            <b-input
-              type="text"
-              placeholder="Id généré automatiquement"
-              autocomplete="off"
-              :value="character.id"
-              disabled
-            >
-            </b-input>
-          </b-field>
-
-          <b-field
-            label="Nom"
-            :type="nameAttributes.nameType"
-            :message="nameAttributes.nameMessage"
-          >
-            <b-input
-              type="text"
-              v-model="character.name"
-              placeholder="Nom du personnage"
-              autocomplete="off"
-              required
-              :disabled="isEdition()"
-            >
-            </b-input>
-          </b-field>
-          <b-field label="Date de création">
-            <b-datepicker
-              placeholder="Clique pour sélectionner une date"
-              trap-focus
-              required
-              v-model="character.creationDate"
-            >
-            </b-datepicker>
-          </b-field>
-          <b-field
-            label="Clan"
-            :type="clanAttributes.clanType"
-            :message="clanAttributes.clanMessage"
-          >
-            <b-select
-              placeholder="Choisis un clan"
-              :model-value="character.clan"
-              required
-              @update:model-value="updateClan"
-            >
-              <option v-for="clan in clanAttributes.clans" :key="clan.key" :value="clan.key">
-                {{ clan.name }}
-              </option>
-            </b-select>
-          </b-field>
-        </div>
-        <div class="model-card-body__section">
-          <b-field label="Rituels">
-            <b-checkbox v-model="ritualsAttributes.isAmeDeLHomoncule" @change="updateRituels">
-              Ame de l'Homoncule
-            </b-checkbox>
-          </b-field>
-          <b-field label="Atouts">
-            <b-checkbox
-              v-model="assetAttributes.isMarionnettiste"
-              @change="updateAssetMarionnettiste"
-              >marionnettiste</b-checkbox
-            >
-            <b-checkbox v-model="assetAttributes.isMonopoliste" @change="updateAssetMonopoliste"
-              >monopoliste</b-checkbox
-            >
-            <b-checkbox v-model="assetAttributes.isParangon" @change="updateAssetParangon"
-              >parangon</b-checkbox
-            >
-          </b-field>
-        </div>
-        <div class="model-card-body__section">
-          <b-field label="Compétences">
-            <b-field
-              v-for="competence in competencesAttributes.competences"
-              :key="competence.key"
-              :label="competence.name"
-            >
-              <b-numberinput
-                size="is-small"
-                v-model="competence.value"
-                :min="0"
-                :max="7"
-                :step="1"
-                controls-position="compact"
-                required
-                @update:model-value="updateCompetence(competence)"
-              />
-            </b-field>
-          </b-field>
-
-          <b-field
-            label="Troupeau"
-            :type="herdAttributes.herdType"
-            :message="herdAttributes.herdMessage"
-          >
-            <b-field label="Nom" :type="herdAttributes.herdType">
-              <b-input
-                type="text"
-                v-model="character.herd.name"
-                placeholder="Nom du troupeau"
-                autocomplete="off"
-              >
-              </b-input>
-            </b-field>
-            <b-field label="Description" :type="herdAttributes.herdType">
-              <b-input
-                type="textarea"
-                maxlength="250"
-                v-model="character.herd.description"
-                placeholder="Description du troupeau"
-                autocomplete="off"
-              >
-              </b-input>
-            </b-field>
-            <b-field label="Niveau" :type="herdAttributes.herdType">
-              <b-numberinput
-                size="is-small"
-                v-model="character.herd.level"
-                :min="0"
-                :max="7"
-                :step="1"
-                controls-position="compact"
-                required
-              />
-            </b-field>
-          </b-field>
-        </div>
-        <div class="model-card-body__section">
-          <div v-if="influences">
-            <InfluenceTable
-              @addInfluence="addInfluence"
-              @editInfluence="editInfluence"
-              @deleteInfluence="deleteInfluence"
-              :influences="influences"
-            />
-          </div>
-        </div>
-        <div class="model-card-body__section">
-          <b-field label="Joueur">
-            <b-select
-              placeholder="Choisis un joueur"
-              :model-value="getPlayerName(character.playerId)"
-              @update:model-value="updatePlayer"
-            >
-              <option v-for="user in users" :key="user.id" :value="user.name">
-                {{ user.name }}
-              </option>
-            </b-select>
-          </b-field>
-        </div>
-      </section>
-      <footer class="modal-card-foot">
-        <b-button label="Close" @click="$emit('close')" />
-        <b-button v-if="!isEdition()" label="Ajouter" type="is-primary" @click="addCharacter" />
-        <b-button v-if="isEdition()" label="Modifier" type="is-primary" @click="editCharacter" />
-      </footer>
-    </div>
-  </form>
-</template>
-
 <script lang="ts">
 import UserService from '@/services/user.service'
 import { defineComponent } from 'vue'
@@ -278,7 +102,11 @@ export default defineComponent({
       (response) => {
         this.users = response
         this.minimalUser = {
-          ...(this.users.find((user) => user.id == this.character.playerId) || { id: '', name: '' })
+          ...(this.users.find((user) => user.id == this.character.playerId) || {
+            id: '',
+            name: '',
+            email: ''
+          })
         }
       },
       (error) => {
@@ -288,14 +116,13 @@ export default defineComponent({
     this.updateFormProps()
   },
   methods: {
-    isEdition() {
+    isEdition(): boolean {
       return !!this.character.id
     },
-    updateClan(clan: string) {
+    updateClan(clan: string): void {
       this.character.clan = clan as Clan
     },
-    updateRituels() {
-      //updateFormProps() works here and this method is not useful but kept for future refactoring
+    updateRituals(): void {
       if (this.ritualsAttributes.isAmeDeLHomoncule) {
         this.character.rituals.push(Ritual.AME_DE_L_HOMONCULE)
       } else {
@@ -305,7 +132,7 @@ export default defineComponent({
       }
     },
     //TODO : refactor code to put all assets in a separate component
-    updateAssetMarionnettiste() {
+    updateAssetMarionnettiste(): void {
       if (this.assetAttributes.isMarionnettiste) {
         this.character.assets.push(Asset.MARIONNETTISTE)
       } else {
@@ -314,14 +141,14 @@ export default defineComponent({
         )
       }
     },
-    updateAssetMonopoliste() {
+    updateAssetMonopoliste(): void {
       if (this.assetAttributes.isMonopoliste) {
         this.character.assets.push(Asset.MONOPOLISTE)
       } else {
         this.character.assets = this.character.assets.filter((asset) => asset !== Asset.MONOPOLISTE)
       }
     },
-    updateAssetParangon() {
+    updateAssetParangon(): void {
       if (this.assetAttributes.isParangon) {
         this.character.assets.push(Asset.PARANGON)
       } else {
@@ -329,11 +156,11 @@ export default defineComponent({
       }
     },
 
-    updateCompetence(competence) {
-      this.character.competences[competence.key] = competence.value
+    updateCompetence({ key, value, name }): void {
+      this.character.competences[key] = value
     },
 
-    updatePlayer(playerName: string) {
+    updatePlayer(playerName: string): void {
       const player = this.users.find((user) => user.name == playerName)
       if (player) {
         this.character.playerId = player.id
@@ -341,11 +168,11 @@ export default defineComponent({
         this.character.playerId = ''
       }
     },
-    getPlayerName(playerId: string) {
-      return this.users.find((user) => user.id == playerId)?.name
+    getPlayerName(playerId: string): string {
+      return this.users.find((user) => user.id == playerId)?.name || ''
     },
 
-    updateFormProps() {
+    updateFormProps(): void {
       this.competencesAttributes.competences.map((competence) => {
         competence.value = this.character.competences[competence.key]
         return competence
@@ -357,7 +184,7 @@ export default defineComponent({
         Ritual.AME_DE_L_HOMONCULE
       )
     },
-    async addCharacter() {
+    async addCharacter(): void {
       this.checkClan()
       await this.checkName()
       this.checkHerd()
@@ -369,7 +196,7 @@ export default defineComponent({
         this.$emit('addCharacter', this.character)
       }
     },
-    async editCharacter() {
+    editCharacter(): void {
       this.checkClan()
       this.checkHerd()
       if (
@@ -380,19 +207,19 @@ export default defineComponent({
         this.$emit('editCharacter', this.character)
       }
     },
-    addInfluence(influenceToAdd: Influence) {
+    addInfluence(influenceToAdd: Influence): void {
       this.$emit('addInfluence', influenceToAdd)
     },
-    editInfluence(influenceToEdit: Influence) {
+    editInfluence(influenceToEdit: Influence): void {
       this.$emit('editInfluence', influenceToEdit)
     },
-    deleteInfluence(influenceToDelete: Influence) {
+    deleteInfluence(influenceToDelete: Influence): void {
       this.$emit('deleteInfluence', influenceToDelete)
     },
-    getTitle() {
+    getTitle(): string {
       return this.isEdition() ? 'Modifier un personnage' : 'Ajouter un personnage'
     },
-    setNameTypeInfo(message, type) {
+    setNameTypeInfo(message: string, type: string): void {
       this.nameAttributes.nameMessage = message
       this.nameAttributes.nameType = type
     },
@@ -467,6 +294,182 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <div>Character</div>
+  <form action="">
+    <div class="modal-card" style="width: auto">
+      <header class="modal-card-head">
+        <b-icon icon="bat" type="is-info" size="is-large"> </b-icon>
+        <p class="modal-card-title">{{ getTitle() }}</p>
+        <button type="button" class="delete" @click="$emit('close')" />
+      </header>
+      <section class="modal-card-body">
+        <p v-if="!isEdition()">
+          Attention : le nom du personnsage ne pourra plus être modifié après la création
+        </p>
+        <div class="model-card-body__section">
+          <b-field v-if="isEdition()" label="ID">
+            <b-input
+              type="text"
+              placeholder="Id généré automatiquement"
+              autocomplete="off"
+              :value="character.id"
+              disabled
+            >
+            </b-input>
+          </b-field>
+
+          <b-field
+            label="Nom"
+            :type="nameAttributes.nameType"
+            :message="nameAttributes.nameMessage"
+          >
+            <b-input
+              type="text"
+              v-model="character.name"
+              placeholder="Nom du personnage"
+              autocomplete="off"
+              required
+              :disabled="isEdition()"
+            >
+            </b-input>
+          </b-field>
+          <b-field label="Date de création">
+            <b-datepicker
+              placeholder="Clique pour sélectionner une date"
+              trap-focus
+              required
+              v-model="character.creationDate"
+            >
+            </b-datepicker>
+          </b-field>
+          <b-field
+            label="Clan"
+            :type="clanAttributes.clanType"
+            :message="clanAttributes.clanMessage"
+          >
+            <b-select
+              placeholder="Choisis un clan"
+              :model-value="character.clan"
+              required
+              @update:model-value="updateClan"
+            >
+              <option v-for="clan in clanAttributes.clans" :key="clan.key" :value="clan.key">
+                {{ clan.name }}
+              </option>
+            </b-select>
+          </b-field>
+        </div>
+        <div class="model-card-body__section">
+          <b-field label="Rituels">
+            <b-checkbox v-model="ritualsAttributes.isAmeDeLHomoncule" @change="updateRituals">
+              Ame de l'Homoncule
+            </b-checkbox>
+          </b-field>
+          <b-field label="Atouts">
+            <b-checkbox
+              v-model="assetAttributes.isMarionnettiste"
+              @change="updateAssetMarionnettiste"
+              >marionnettiste</b-checkbox
+            >
+            <b-checkbox v-model="assetAttributes.isMonopoliste" @change="updateAssetMonopoliste"
+              >monopoliste</b-checkbox
+            >
+            <b-checkbox v-model="assetAttributes.isParangon" @change="updateAssetParangon"
+              >parangon</b-checkbox
+            >
+          </b-field>
+        </div>
+        <div class="model-card-body__section">
+          <b-field label="Compétences">
+            <b-field
+              v-for="competence in competencesAttributes.competences"
+              :key="competence.key"
+              :label="competence.name"
+            >
+              <b-numberinput
+                size="is-small"
+                v-model="competence.value"
+                :min="0"
+                :max="7"
+                :step="1"
+                controls-position="compact"
+                required
+                @update:model-value="updateCompetence(competence)"
+              />
+            </b-field>
+          </b-field>
+
+          <b-field
+            label="Troupeau"
+            :type="herdAttributes.herdType"
+            :message="herdAttributes.herdMessage"
+          >
+            <b-field label="Nom" :type="herdAttributes.herdType">
+              <b-input
+                type="text"
+                v-model="character.herd.name"
+                placeholder="Nom du troupeau"
+                autocomplete="off"
+              >
+              </b-input>
+            </b-field>
+            <b-field label="Description" :type="herdAttributes.herdType">
+              <b-input
+                type="textarea"
+                maxlength="250"
+                v-model="character.herd.description"
+                placeholder="Description du troupeau"
+                autocomplete="off"
+              >
+              </b-input>
+            </b-field>
+            <b-field label="Niveau" :type="herdAttributes.herdType">
+              <b-numberinput
+                size="is-small"
+                v-model="character.herd.level"
+                :min="0"
+                :max="7"
+                :step="1"
+                controls-position="compact"
+                required
+              />
+            </b-field>
+          </b-field>
+        </div>
+        <div class="model-card-body__section">
+          <div v-if="influences">
+            <InfluenceTable
+              @addInfluence="addInfluence"
+              @editInfluence="editInfluence"
+              @deleteInfluence="deleteInfluence"
+              :influences="influences"
+            />
+          </div>
+        </div>
+        <div class="model-card-body__section">
+          <b-field label="Joueur">
+            <b-select
+              placeholder="Choisis un joueur"
+              :model-value="getPlayerName(character.playerId)"
+              @update:model-value="updatePlayer"
+            >
+              <option v-for="user in users" :key="user.id" :value="user.name">
+                {{ user.name }}
+              </option>
+            </b-select>
+          </b-field>
+        </div>
+      </section>
+      <footer class="modal-card-foot">
+        <b-button label="Fermer" @click="$emit('close')" />
+        <b-button v-if="!isEdition()" label="Ajouter" type="is-primary" @click="addCharacter" />
+        <b-button v-if="isEdition()" label="Modifier" type="is-primary" @click="editCharacter" />
+      </footer>
+    </div>
+  </form>
+</template>
 
 <style scoped lang="scss">
 .model-card-body {

@@ -1,40 +1,40 @@
-import axios, { type AxiosResponse } from 'axios'
-import authHeader from '../services/auth-header'
+import { type AxiosResponse } from 'axios'
 import type { MinimalUser } from '@/types/minimalUser'
+import api from '@/api/api'
+import type { User } from '@/types/user'
 
-//TODO : typer toutes les réponses
-
-const API_URL = 'http://localhost:8080/api/v1/users'
+const API_URL = '/users'
 
 class UserService {
-  getUsers() {
-    return axios.get(API_URL, { headers: authHeader() })
+  getUsers(): Promise<AxiosResponse<User[]>> {
+    return api.get(API_URL)
   }
 
   getMinimalUsers(): Promise<AxiosResponse<MinimalUser[]>> {
-    return axios.get(API_URL + '/minimal', { headers: authHeader() })
+    return api.get(API_URL + '/minimal')
+  }
+  getMinimalUserByEmail(email: string): Promise<AxiosResponse<MinimalUser>> {
+    return api.get(API_URL + '/minimal/email/' + email)
   }
 
-  addUser(user) {
-    return axios.post(API_URL, user, { headers: authHeader() })
+  addUser(user: User): Promise<AxiosResponse<User>> {
+    return api.post(API_URL, user)
   }
 
-  editUser(user) {
-    return axios.put(API_URL + '/' + user.id, user, { headers: authHeader() })
+  editUser(user: User): Promise<AxiosResponse<User>> {
+    return api.put(API_URL + '/' + user.id, user)
   }
 
-  deleteUser(id) {
-    return axios.delete(API_URL + '/' + id, { headers: authHeader() })
+  deleteUser(id: string): Promise<AxiosResponse<void>> {
+    return api.delete(API_URL + '/' + id)
   }
 
-  isNameTaken(name) {
-    const result = axios.get(API_URL + '/name/' + name, { headers: authHeader() })
-    console.log(result)
-    return result
+  isNameTaken(name: string): Promise<AxiosResponse<boolean>> {
+    return api.get(API_URL + '/name/' + name)
   }
 
-  isEmailTaken(email) {
-    return axios.get(API_URL + '/email/' + email, { headers: authHeader() })
+  isEmailTaken(email): Promise<AxiosResponse<boolean>> {
+    return api.get(API_URL + '/email/' + email)
   }
 }
 

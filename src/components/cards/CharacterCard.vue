@@ -1,29 +1,3 @@
-<template>
-  <div class="character_card">
-    <div class="character_card__info">
-      <div class="character_card__info__name">
-        <h3>{{ character.name }}</h3>
-      </div>
-      <div class="character_card__info__clan">
-        <p>{{ character.clan }}</p>
-      </div>
-      <div class="character_card__info__player">
-        <p>
-          joueur : <strong>{{ getPlayerName() }}</strong>
-        </p>
-      </div>
-    </div>
-    <div class="charcacter_card__actions">
-      <b-button @click="openEditCharacter">
-        <b-icon icon="pencil"></b-icon>
-      </b-button>
-      <b-button @click="confirmDeleteCharacter">
-        <b-icon icon="delete" type="is-danger"></b-icon>
-      </b-button>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
 import { defineComponent } from 'vue'
 import type { Character } from '@/types/character'
@@ -55,6 +29,32 @@ export default defineComponent({
   emits: ['editCharacter', 'deleteCharacter']
 })
 </script>
+
+<template>
+  <div class="character_card">
+    <div class="character_card__info">
+      <div class="character_card__info__name">
+        <h3>{{ character.name }}</h3>
+      </div>
+      <div class="character_card__info__clan">
+        <p>{{ character.clan }}</p>
+      </div>
+      <div class="character_card__info__player">
+        <p>
+          joueur : <strong>{{ getPlayerName() }}</strong>
+        </p>
+      </div>
+    </div>
+    <div class="charcacter_card__actions">
+      <b-button @click="openEditCharacter">
+        <b-icon icon="pencil"></b-icon>
+      </b-button>
+      <b-button @click="confirmDeleteCharacter">
+        <b-icon icon="delete" type="is-danger"></b-icon>
+      </b-button>
+    </div>
+  </div>
+</template>
 
 <style scoped lang="scss">
 .character_card {

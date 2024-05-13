@@ -1,34 +1,3 @@
-<template>
-  <p>Characters</p>
-  <b-button @click="openNewCharacter" rounded type="is-primary">
-    <b-icon icon="plus"></b-icon>
-  </b-button>
-  <div class="characters_list">
-    <div class="characters_list__character" v-for="character in characters" :key="character.id">
-      <character-card
-        :character="character"
-        :player="getPlayer(character.playerId)"
-        @edit-character="openEditCharacter"
-        @delete-character="confirmDeleteCharacter"
-      />
-    </div>
-  </div>
-  <b-modal v-model="isModalOpen" has-modal-card :destroy-on-hide="true">
-    <template #default="props">
-      <CharacterFormComponent
-        :character="character"
-        :influences="influences"
-        @close="props.close()"
-        @addCharacter="addCharacter"
-        @addInfluence="addInfluence"
-        @editCharacter="editCharacter"
-        @editInfluence="editInfluence"
-        @deleteInfluence="deleteInfluence"
-      />
-    </template>
-  </b-modal>
-</template>
-
 <script lang="ts">
 import CharacterService from '@/services/character.service'
 import CharacterFormComponent from '@/components/forms/CharacterFormComponent.vue'
@@ -191,7 +160,7 @@ export default defineComponent({
     },
     deleteCharacter(characterToDelete: Character) {
       CharacterService.deleteCharacter(characterToDelete).then(
-        (response) => {
+        () => {
           this.characters = this.characters.filter(
             (character) => character.id !== characterToDelete.id
           )
@@ -208,12 +177,44 @@ export default defineComponent({
   }
 })
 </script>
+
+<template>
+  <b-button @click="openNewCharacter" rounded type="is-primary">
+    <b-icon icon="plus"></b-icon>
+  </b-button>
+  <div class="characters_list">
+    <div class="characters_list__character" v-for="character in characters" :key="character.id">
+      <character-card
+        :character="character"
+        :player="getPlayer(character.playerId)"
+        @edit-character="openEditCharacter"
+        @delete-character="confirmDeleteCharacter"
+      />
+    </div>
+  </div>
+  <b-modal v-model="isModalOpen" has-modal-card :destroy-on-hide="true">
+    <template #default="props">
+      <CharacterFormComponent
+        :character="character"
+        :influences="influences"
+        @close="props.close()"
+        @addCharacter="addCharacter"
+        @addInfluence="addInfluence"
+        @editCharacter="editCharacter"
+        @editInfluence="editInfluence"
+        @deleteInfluence="deleteInfluence"
+      />
+    </template>
+  </b-modal>
+</template>
+
 <style scoped lang="scss">
 .characters_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   .characters_list__character {
+    margin-right: 1rem;
     margin-top: 1rem;
   }
 }

@@ -1,19 +1,18 @@
-import axios, { type AxiosResponse } from 'axios'
-import authHeader from '@/services/auth-header'
+import { type AxiosResponse } from 'axios'
 import type { Influence } from '@/types/influence'
+import api from '@/api/api'
 
-const API_URL = 'http://localhost:8080/api/v1/influences'
+const API_URL = '/influences'
 
 class InfluenceApi {
   getInfluencesByCharacterId(characterId: string): Promise<AxiosResponse<Influence[]>> {
-    return axios.get(API_URL + '/character/' + characterId, { headers: authHeader() })
+    return api.get(API_URL + '/character/' + characterId)
   }
   addInfluences(influences: Influence[]): Promise<AxiosResponse<Influence[]>> {
-    return axios.post(API_URL, influences, { headers: authHeader() })
+    return api.post(API_URL, influences)
   }
   editInfluences(influences: Influence[]): Promise<AxiosResponse<Influence[]>> {
-    console.log(influences)
-    return axios.put(API_URL, influences, { headers: authHeader() })
+    return api.put(API_URL, influences)
   }
 }
 

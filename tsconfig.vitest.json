@@ -15,6 +15,7 @@
     "preserveValueImports": false,
     "isolatedModules": true,
     "strict" : true,
+    "noImplicitThis": true,
     "noImplicitAny": false,
     "allowJs": true,
     "baseUrl": ".",

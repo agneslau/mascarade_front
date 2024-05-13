@@ -1,14 +1,17 @@
-import axios from 'axios'
-import authHeader from './auth-header'
 import UserApi from '@/api/user.api'
 import type { MinimalUser } from '@/types/minimalUser'
-
-const API_URL = 'http://localhost:8080/api/v1/users'
-//TODO : refactor to call API from user.api.ts
+import type { User } from '@/types/user'
 
 class UserService {
-  getUsers() {
-    return axios.get(API_URL, { headers: authHeader() })
+  getUsers(): Promise<User[]> {
+    return UserApi.getUsers().then(
+      (response: { data: User[] }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
   getMinimalUsers(): Promise<MinimalUser[]> {
@@ -21,27 +24,68 @@ class UserService {
       }
     )
   }
-
-  addUser(user) {
-    return axios.post(API_URL, user, { headers: authHeader() })
+  getMinimalUserByEmail(email: string): Promise<MinimalUser> {
+    return UserApi.getMinimalUserByEmail(email).then(
+      (response: { data: MinimalUser }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
-  editUser(user) {
-    return axios.put(API_URL + '/' + user.id, user, { headers: authHeader() })
+  addUser(user: User): Promise<User> {
+    return UserApi.addUser(user).then(
+      (response: { data: User }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
-  deleteUser(id) {
-    return axios.delete(API_URL + '/' + id, { headers: authHeader() })
+  editUser(user: User): Promise<User> {
+    return UserApi.editUser(user).then(
+      (response: { data: User }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
-  isNameTaken(name) {
-    const result = axios.get(API_URL + '/name/' + name, { headers: authHeader() })
-    console.log(result)
-    return result
+  deleteUser(id: string): Promise<void> {
+    return UserApi.deleteUser(id).then(
+      () => {},
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 
-  isEmailTaken(email) {
-    return axios.get(API_URL + '/email/' + email, { headers: authHeader() })
+  isNameTaken(name: string): Promise<boolean> {
+    return UserApi.isNameTaken(name).then(
+      (response: { data: boolean }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
+  }
+
+  isEmailTaken(email: string): Promise<boolean> {
+    return UserApi.isEmailTaken(email).then(
+      (response: { data: boolean }) => {
+        return response.data
+      },
+      (error) => {
+        return error.response?.data?.message || error.message || error.toString()
+      }
+    )
   }
 }
 
