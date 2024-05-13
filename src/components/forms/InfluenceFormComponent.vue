@@ -217,7 +217,7 @@ export default defineComponent({
         </b-field>
       </section>
       <footer class="modal-card-foot">
-        <b-button label="Close" @click="$emit('close')" />
+        <b-button label="Fermer" @click="$emit('close')" />
         <b-button v-if="!isEdition()" label="Ajouter" type="is-primary" @click="addInfluence" />
         <b-button v-if="isEdition()" label="Modifier" type="is-primary" @click="editInfluence" />
       </footer>

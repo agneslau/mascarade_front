@@ -212,8 +212,9 @@ export default defineComponent({
 .characters_list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   .characters_list__character {
+    margin-right: 1rem;
     margin-top: 1rem;
   }
 }

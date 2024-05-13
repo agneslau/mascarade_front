@@ -299,7 +299,7 @@ export default defineComponent({
         </b-field>
       </section>
       <footer class="modal-card-foot">
-        <b-button label="Close" @click="$emit('close')" />
+        <b-button label="Fermer" @click="$emit('close')" />
         <b-button v-if="isAddUser" label="Ajouter" type="is-primary" @click="addUser" />
         <b-button v-if="!isAddUser" label="Modifier" type="is-primary" @click="editUser" />
       </footer>
